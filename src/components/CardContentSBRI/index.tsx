@@ -11,34 +11,29 @@ interface Props {
   lastBmi?: string;
 }
 
-const CardContent: React.FC<Props> = ({
-  location,
-  gender,
-  birthDate,
-  lastHeight,
-  lastWeight,
-  lastBmi,
-}) => {
-  console.log('Hello Ian');
-
+const CardContentSBRI: React.FC<Props> = ({ location, gender, birthDate }) => {
   return (
     <Grid container>
       <Grid item lg={2} md={3} sm={4} xs={12}>
         {birthDate && <Text label="DOB">{birthDate}</Text>}
+      </Grid>
+      <Grid item lg={2} md={3} sm={4} xs={12}>
         {gender && <Text label="Gender">{gender}</Text>}
       </Grid>
       <Grid item lg={2} md={3} sm={4} xs={12}>
         {location && <Text label="Location">{location}</Text>}
       </Grid>
       <Grid item lg={2} md={3} sm={4} xs={12}>
-        {lastHeight && <Text label="Height">{lastHeight}</Text>}
-        {lastWeight && <Text label="Weight">{lastWeight}</Text>}
+        {location && <Text label="Location">{location}</Text>}
       </Grid>
       <Grid item lg={2} md={3} sm={4} xs={12}>
-        {lastBmi && <Text label="BMI">{lastBmi}</Text>}
+        {location && <Text label="Location">{location}</Text>}
+      </Grid>
+      <Grid item lg={2} md={3} sm={4} xs={12}>
+        {location && <Text label="Location">{location}</Text>}
       </Grid>
     </Grid>
   );
 };
 
-export default CardContent;
+export default CardContentSBRI;

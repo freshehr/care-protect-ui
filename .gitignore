@@ -2,6 +2,7 @@
 coverage
 build
 node_modules
+.idea
 stats.json
 .pnp
 .pnp.js

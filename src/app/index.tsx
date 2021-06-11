@@ -27,6 +27,7 @@ import { PatientOverview } from './containers/PatientOverview';
 import Login from './containers/Login';
 
 import Layout from 'components/Layout';
+import { TransferAssessment } from './containers/TransferAssessment';
 
 export function App() {
   useInjectReducer({ key: 'session', reducer: sessionReducer });
@@ -70,6 +71,27 @@ export function App() {
           <ProtectedRoute
             exact
             path={process.env.PUBLIC_URL + '/covid-management/:id'}
+            component={InfectionControl}
+            authenticated={authenticated}
+            username={auth}
+          />
+          <ProtectedRoute
+            exact
+            path={process.env.PUBLIC_URL + '/transfer-assessment/:id'}
+            component={TransferAssessment}
+            authenticated={authenticated}
+            username={auth}
+          />
+          <ProtectedRoute
+            exact
+            path={process.env.PUBLIC_URL + '/sbri-dash/:id'}
+            component={InfectionControl}
+            authenticated={authenticated}
+            username={auth}
+          />
+          <ProtectedRoute
+            exact
+            path={process.env.PUBLIC_URL + '/import-export/:id'}
             component={InfectionControl}
             authenticated={authenticated}
             username={auth}

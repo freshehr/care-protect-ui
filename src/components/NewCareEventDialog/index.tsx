@@ -63,6 +63,25 @@ const NewCareEventDialog: React.FC<Props> = ({
   ): void => {
     history.push(`/covid-management/${id}`);
   };
+
+  const startTransferAssessment = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+  ): void => {
+    history.push(`/transfer-assessment/${id}`);
+  };
+
+  const showSBRIDash = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+  ): void => {
+    history.push(`/sbri-dash/${id}`);
+  };
+
+  const showImportExport = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+  ): void => {
+    history.push(`/import-export/${id}`);
+  };
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle id="title" onClose={handleClose}>
@@ -134,6 +153,11 @@ const NewCareEventDialog: React.FC<Props> = ({
               SEPSIS Screening
             </Button.Primary>
           </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondary" align="center">
+              SBRI Platform demo:
+            </Typography>
+          </Grid>
           <Grid item xs={12} sm={6}>
             {' '}
             <Button.Primary
@@ -143,6 +167,39 @@ const NewCareEventDialog: React.FC<Props> = ({
               fullWidth
             >
               COVID Assessment
+            </Button.Primary>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            {' '}
+            <Button.Primary
+              onClick={startTransferAssessment}
+              variant="outlined"
+              value="transfer"
+              fullWidth
+            >
+              Transfer Assessment
+            </Button.Primary>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            {' '}
+            <Button.Primary
+              onClick={showSBRIDash}
+              variant="outlined"
+              value="sbridash"
+              fullWidth
+            >
+              SBRI Dashboard
+            </Button.Primary>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            {' '}
+            <Button.Primary
+              onClick={showImportExport}
+              variant="outlined"
+              value="importexport"
+              fullWidth
+            >
+              Interoperability
             </Button.Primary>
           </Grid>
         </Grid>

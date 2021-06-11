@@ -7,6 +7,7 @@ export const initialState: ContainerState = {
   loading: false,
   error: null,
   patient: null,
+  bodyMetrics: {},
 };
 
 const patientOverviewSlice = createSlice({

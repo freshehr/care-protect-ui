@@ -14,7 +14,12 @@ import {
   Carousel,
 } from 'components';
 import { IconButton, Box, Typography } from '@material-ui/core';
-import { selectError, selectLoading, selectPatient } from './selectors';
+import {
+  selectError,
+  selectLoading,
+  selectPatient,
+  selectBodyMetrics,
+} from './selectors';
 import CloseIcon from '@material-ui/icons/Close';
 import { SituationBackgroundSteps } from './Secitons/SituatiionBackground';
 import { AssesmentOverview } from './Secitons/AssesmentOverview';
@@ -34,6 +39,7 @@ export function PatientOverview() {
   const isLoading = useSelector(selectLoading);
   const error = useSelector(selectError);
   const patient = useSelector(selectPatient);
+  const bodyMetrics = useSelector(selectBodyMetrics);
 
   React.useEffect(() => {
     dispatch(actions.loadRecord(id));
@@ -107,6 +113,9 @@ export function PatientOverview() {
                 birthDate={patient?.birthDate || ''}
                 gender={patient?.gender || ''}
                 location={patient?.location || ''}
+                lastHeight={bodyMetrics.height?.toString()}
+                lastWeight={bodyMetrics.weight?.toString()}
+                lastBmi={bodyMetrics?.bmi?.toString()}
               />
             </Card>
           </Box>

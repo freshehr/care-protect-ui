@@ -8,6 +8,11 @@ export interface PatientOverview {
     | (IPatient & {
         assessment: IAssessmentIcons;
       });
+  bodyMetrics: {
+    height?: number;
+    weight?: number;
+    bmi?: number;
+  };
 }
 
 export enum PatientOverviewErrorType {
