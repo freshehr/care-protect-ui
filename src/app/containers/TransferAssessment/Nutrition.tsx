@@ -25,6 +25,7 @@ import { Button, NativeSelect, Dialog, DialogTitle, Spinner } from 'components';
 import { useForm } from 'react-hook-form';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { Line } from 'react-chartjs-2';
 
 export function Nutrition() {
   const theme = useTheme();
@@ -101,6 +102,47 @@ export function Nutrition() {
     },
   ];
 
+  const lineData = {
+    labels: ['1', '2', '3', '4', '5', '6'],
+    datasets: [
+      {
+        label: 'MUST score',
+        data: [12, 19, 3, 5, 2, 3],
+        fill: false,
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgba(255, 99, 132, 0.2)',
+      },
+      {
+        label: 'BMI',
+        data: [3, 6, 4, 6, 6, 6],
+        fill: false,
+        backgroundColor: 'rgb(255, 128, 0)',
+        borderColor: 'rgba(255, 99, 132, 0.2)',
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+  };
+
+  const LineChart = () => (
+    <>
+      <div className="header">
+        <h1 className="title">Nutrition</h1>
+      </div>
+      <Line data={lineData} options={options} type={'line'} />
+    </>
+  );
+
   return (
     <>
       <Grid
@@ -112,11 +154,7 @@ export function Nutrition() {
         <Grid item>
           <Grid container justify="flex-start" alignItems="stretch" spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="subtitle2">
-                <Box fontWeight={1000}>
-                  <DataGrid rows={[]} columns={columns} pageSize={5} />
-                </Box>
-              </Typography>
+              <LineChart />
             </Grid>
           </Grid>
           <Grid item>
