@@ -23,77 +23,31 @@ import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Button, Dialog, NativeSelect, DialogTitle, Spinner } from 'components';
 import { useForm } from 'react-hook-form';
-import { Line } from 'react-chartjs-2';
 
-const iorn2 = {
-  adl: {
-    code: '840544004',
-    value: 'at0005',
-    terminology: 'local',
-    ordinal: 3,
-  },
-  pcfp: {
-    code: '840544004',
-    value: 'at0005',
-    terminology: 'local',
-    ordinal: 6,
-  },
-  mwab: {
-    code: '840544004',
-    value: 'at0005',
-    terminology: 'local',
-    ordinal: 3,
-  },
-  group: {
-    code: '840544004',
-    value: 'at0005',
-    terminology: 'local',
-    ordinal: 12,
-  },
-};
-
-const lineData = {
-  labels: ['1', '2', '3', '4', '5', '6'],
-  datasets: [
-    {
-      label: 'Total score',
-      data: [12, 19, 3, 5, 2, 3],
-      fill: false,
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgba(255, 99, 132, 0.2)',
+const isolationReasonToRequest = value =>
+  ({
+    'Symptoms (10 days duration)': {
+      code: '840544004',
+      value: 'Suspected disease caused by 2019 novel coronavirus',
+      terminology: 'SNOMED-CT',
     },
-    {
-      label: 'PCFP',
-      data: [3, 6, 4, 6, 6, 6],
-      fill: false,
-      backgroundColor: 'rgb(255, 128, 0)',
-      borderColor: 'rgba(255, 99, 132, 0.2)',
+    'Tested Positive (10 days duration)': {
+      code: '840539006',
+      value: 'Disease caused by 2019-nCoV',
+      terminology: 'SNOMED-CT',
     },
-  ],
-};
-
-const options = {
-  scales: {
-    yAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-        },
-      },
-    ],
-  },
-};
-
-const LineChart = () => (
-  <>
-    <div className="header">
-      <h1 className="title">Iorn2 progress</h1>
-    </div>
-    <Line data={lineData} options={options} type={'line'} />
-  </>
-);
-
-export function Iorn2() {
+    'Contact with Symptoms or Positive Case (14 days duration)': {
+      code: '840546002',
+      value: 'Exposure to 2019 novel coronavirus',
+      terminology: 'SNOMED-CT',
+    },
+    'Following discharge (14 days)': {
+      code: '840546002',
+      value: 'Exposure to 2019 novel coronavirus',
+      terminology: 'SNOMED-CT',
+    },
+  }[value]);
+export function IsolationStatus() {
   const theme = useTheme();
   const small = useMediaQuery(theme.breakpoints?.between('xs', 'sm'));
   const large = useMediaQuery(theme.breakpoints?.up(1280));
@@ -129,8 +83,20 @@ export function Iorn2() {
   const onSubmit = data => {
     const end = new Date(data.isolationEndDate);
     const startDate = end.getDate() - parseInt(isolationDays);
-
-    //  dispatch(actions.pending(isolation));
+    const isolation = {
+      isolation_request: {
+        reason_for_request: isolationReasonToRequest(data.reasonForIsolation),
+        reasonForIsolation: data.reasonForIsolation,
+        isolationDuration:
+          data?.reasonForIsolation &&
+          data?.reasonForIsolation.includes('10 days')
+            ? 'P10D'
+            : 'P14D',
+        dateIsolationDueToStart: startDate,
+        dateIsolationDueToEnd: data.isolationEndDate,
+      },
+    };
+    dispatch(actions.pending(isolation));
   };
 
   const handleOpen = () => setOpen(true);
@@ -146,18 +112,14 @@ export function Iorn2() {
         <Grid item>
           <Grid container justify="flex-start" alignItems="stretch" spacing={2}>
             <Grid item xs={12}>
-              <FormLabel component="legend">Iorn2</FormLabel>
+              <FormLabel component="legend">Isolation Status</FormLabel>
             </Grid>
-            <Grid item lg={6} xs={12}>
-              <LineChart />
-            </Grid>
-
             <Grid item lg={6} xs={12}>
               <TextField
                 size="small"
                 id="read-only-input-isolation-days"
-                label="ADL score"
-                value={iorn2.adl.ordinal || ''}
+                label="Current Isolation Status"
+                value={isolationStatus || ''}
                 // defaultValue={isolationStatus}
                 InputProps={{
                   readOnly: true,
@@ -170,8 +132,8 @@ export function Iorn2() {
               <TextField
                 size="small"
                 id="outlined-read-only-input"
-                label="PCFP score"
-                value={iorn2.pcfp.ordinal || ''}
+                label="Isolation Reason"
+                value={isolationReason || ''}
                 // defaultValue={isolationReason}
                 InputProps={{
                   readOnly: true,
@@ -184,10 +146,10 @@ export function Iorn2() {
               <TextField
                 size="small"
                 id="read-only-input-isolation-date"
-                label="MWB score"
-                type="numeric"
+                label="Last Updated"
+                type="date"
                 InputLabelProps={{ shrink: true }}
-                value={iorn2.mwab.ordinal || ''}
+                value={updateDate || ''}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -199,10 +161,10 @@ export function Iorn2() {
               <TextField
                 size="small"
                 id="outlined-read-only-input"
-                label="Group"
-                type="string"
-                defaultValue={'B3'}
-                value={iorn2.group.value || ''}
+                label="Isolation End Date"
+                type="date"
+                defaultValue={'2021-01-14'}
+                InputLabelProps={{ shrink: true }}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -212,7 +174,13 @@ export function Iorn2() {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle2">
-                <Box fontWeight={500}></Box>
+                <Box fontWeight={500}>
+                  {dayOfIsolation &&
+                  isolationDays &&
+                  dayOfIsolation <= isolationDays
+                    ? ` Isolating on day ${dayOfIsolation} of ${isolationDays}`
+                    : 'Isolation Completed'}
+                </Box>
               </Typography>
             </Grid>
           </Grid>

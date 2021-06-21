@@ -20,6 +20,7 @@ import { useInjectReducer } from 'redux-injectors';
 
 import { AcuityDashboard } from './containers/AcuityDashboard';
 import { Assessment } from './containers/Assessment';
+import { SmartEhr } from './containers/SmartEhr';
 import { InfectionControl } from './containers/InfectionControl';
 import { NotFoundPage } from 'components/NotFoundPage/Loadable';
 import { PatientList } from './containers/PatientList/';
@@ -91,8 +92,8 @@ export function App() {
           />
           <ProtectedRoute
             exact
-            path={process.env.PUBLIC_URL + '/import-export/:id'}
-            component={InfectionControl}
+            path={process.env.PUBLIC_URL + '/smartehr/:id'}
+            component={SmartEhr}
             authenticated={authenticated}
             username={auth}
           />

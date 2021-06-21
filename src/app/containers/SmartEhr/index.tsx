@@ -36,7 +36,7 @@ import { IsolationStatus } from './IsolationStatus';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Iorn2 } from './Iorn2';
 
-export function TransferAssessment() {
+export function SmartEhr() {
   useInjectSaga({ key: sliceKey, saga: infectionControlSaga });
   useInjectReducer({ key: sliceKey, reducer });
 
@@ -123,9 +123,7 @@ export function TransferAssessment() {
           >
             <Box p={1} width="100%">
               <Grid container justify="center" spacing={4}>
-                <Grid item xs={6} md={6}>
-                  <Nutrition />
-                </Grid>
+                <Grid item xs={6} md={6}></Grid>
                 <Grid item xs={6} md={6}>
                   <Iorn2 />
                 </Grid>

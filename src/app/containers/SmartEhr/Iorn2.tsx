@@ -23,7 +23,6 @@ import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Button, Dialog, NativeSelect, DialogTitle, Spinner } from 'components';
 import { useForm } from 'react-hook-form';
-import { Line } from 'react-chartjs-2';
 
 const iorn2 = {
   adl: {
@@ -51,48 +50,6 @@ const iorn2 = {
     ordinal: 12,
   },
 };
-
-const lineData = {
-  labels: ['1', '2', '3', '4', '5', '6'],
-  datasets: [
-    {
-      label: 'Total score',
-      data: [12, 19, 3, 5, 2, 3],
-      fill: false,
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgba(255, 99, 132, 0.2)',
-    },
-    {
-      label: 'PCFP',
-      data: [3, 6, 4, 6, 6, 6],
-      fill: false,
-      backgroundColor: 'rgb(255, 128, 0)',
-      borderColor: 'rgba(255, 99, 132, 0.2)',
-    },
-  ],
-};
-
-const options = {
-  scales: {
-    yAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-        },
-      },
-    ],
-  },
-};
-
-const LineChart = () => (
-  <>
-    <div className="header">
-      <h1 className="title">Iorn2 progress</h1>
-    </div>
-    <Line data={lineData} options={options} type={'line'} />
-  </>
-);
-
 export function Iorn2() {
   const theme = useTheme();
   const small = useMediaQuery(theme.breakpoints?.between('xs', 'sm'));
@@ -148,10 +105,6 @@ export function Iorn2() {
             <Grid item xs={12}>
               <FormLabel component="legend">Iorn2</FormLabel>
             </Grid>
-            <Grid item lg={6} xs={12}>
-              <LineChart />
-            </Grid>
-
             <Grid item lg={6} xs={12}>
               <TextField
                 size="small"

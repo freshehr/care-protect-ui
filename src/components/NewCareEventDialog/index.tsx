@@ -76,10 +76,10 @@ const NewCareEventDialog: React.FC<Props> = ({
     history.push(`/sbri-dash/${id}`);
   };
 
-  const showImportExport = (
+  const showSmartEhr = (
     event: React.MouseEvent<HTMLElement, MouseEvent>,
   ): void => {
-    history.push(`/import-export/${id}`);
+    history.push(`/smartehr/${id}`);
   };
 
   return (
@@ -194,9 +194,9 @@ const NewCareEventDialog: React.FC<Props> = ({
           <Grid item xs={12} sm={6}>
             {' '}
             <Button.Primary
-              onClick={showImportExport}
+              onClick={showSmartEhr}
               variant="outlined"
-              value="importexport"
+              value="smartehr"
               fullWidth
             >
               Interoperability
