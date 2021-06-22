@@ -34,7 +34,8 @@ import { TestStatus } from './TestStatus';
 
 import { IsolationStatus } from './IsolationStatus';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Iorn2 } from './Iorn2';
+import { IornAugmented } from './IornAugmented';
+import { CovidStatus } from '../InfectionControl/CovidStatus';
 
 export function TransferAssessment() {
   useInjectSaga({ key: sliceKey, saga: infectionControlSaga });
@@ -127,7 +128,7 @@ export function TransferAssessment() {
                   <Nutrition />
                 </Grid>
                 <Grid item xs={6} md={6}>
-                  <Iorn2 />
+                  <IornAugmented />
                 </Grid>
               </Grid>
             </Box>
