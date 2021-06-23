@@ -54,7 +54,7 @@ const iornData = [
       ordinal: 6,
       date: '2020-01-10T00:00:00.000Z',
     },
-    iornTotal: {
+    adlScore: {
       magnitude: 4,
       date: '2020-01-10T00:00:00.000Z',
     },
@@ -74,7 +74,7 @@ const iornData = [
       ordinal: 6,
       date: '2020-02-10T00:00:00.000Z',
     },
-    iornTotal: {
+    adlScore: {
       magnitude: 3,
       date: '2020-02-10T00:00:00.000Z',
     },
@@ -94,7 +94,7 @@ const iornData = [
       ordinal: 6,
       date: '2020-03-10T00:00:00.000Z',
     },
-    iornTotal: {
+    adlScore: {
       magnitude: 2,
       date: '2020-03-10T00:00:00.000Z',
     },
@@ -114,7 +114,7 @@ const iornData = [
       ordinal: 6,
       date: '2020-04-10T00:00:00.000Z',
     },
-    iornTotal: {
+    adlScore: {
       code: '840544004',
       value: 'at0005',
       terminology: 'local',
@@ -137,7 +137,7 @@ const iornData = [
       ordinal: 6,
       date: '2020-05-10T00:00:00.000Z',
     },
-    iornTotal: {
+    adlScore: {
       code: '840544004',
       value: 'at0005',
       terminology: 'local',
@@ -160,7 +160,7 @@ const iornData = [
       ordinal: 6,
       date: '2020-06-10T00:00:00.000Z',
     },
-    iornTotal: {
+    adlScore: {
       code: '840544004',
       value: 'at0005',
       terminology: 'local',
@@ -183,7 +183,7 @@ const iornData = [
       ordinal: 6,
       date: '2020-07-10T00:00:00.000Z',
     },
-    iornTotal: {
+    adlScore: {
       code: '840544004',
       value: 'at0005',
       terminology: 'local',
@@ -206,7 +206,7 @@ const iornData = [
       ordinal: 6,
       date: '2020-08-10T00:00:00.000Z',
     },
-    iornTotal: {
+    adlScore: {
       code: '840544004',
       value: 'at0005',
       terminology: 'local',
@@ -229,7 +229,7 @@ const iornData = [
       ordinal: 6,
       date: '2020-09-10T00:00:00.000Z',
     },
-    iornTotal: {
+    adlScore: {
       code: '840544004',
       value: 'at0005',
       terminology: 'local',
@@ -252,7 +252,7 @@ const iornData = [
       ordinal: 7,
       date: '2020-10-10T00:00:00.000Z',
     },
-    iornTotal: {
+    adlScore: {
       code: '840544004',
       value: 'at0005',
       terminology: 'local',
@@ -270,12 +270,12 @@ const iornData = [
   {
     cfs: {
       code: '840544004',
-      value: 'at0005',
+      value: 'Severe',
       terminology: 'local',
       ordinal: 8,
       date: '2020-11-10T00:00:00.000Z',
     },
-    iornTotal: {
+    adlScore: {
       code: '840544004',
       value: 'at0005',
       terminology: 'local',
@@ -293,12 +293,12 @@ const iornData = [
   {
     cfs: {
       code: '840544004',
-      value: 'at0005',
+      value: 'Severe',
       terminology: 'local',
       ordinal: 8,
       date: '2020-12-10T00:00:00.000Z',
     },
-    iornTotal: {
+    adlScore: {
       code: '840544004',
       value: 'at00',
       terminology: 'local',
@@ -332,33 +332,35 @@ const lineData = {
   ],
   datasets: [
     {
-      label: 'IORN Total ',
+      label: 'ADL score',
       data: iornData.map(function (iorn) {
-        return iorn.iornTotal.magnitude;
+        return iorn.adlScore.magnitude;
       }),
       fill: false,
       backgroundColor: 'rgb(255, 99, 132)',
       borderColor: 'rgba(255, 99, 132, 0.2)',
       yAxisID: 'y',
+      min: 1,
+      max: 15,
     },
     {
-      label: 'CFS',
+      label: 'Frailty',
       data: iornData.map(function (iorn) {
         return iorn.cfs.ordinal;
       }),
       fill: false,
       backgroundColor: 'rgb(39, 129, 37)',
       borderColor: 'rgba(39, 129, 37, 0.2)',
-      yAxisID: 'y1',
+      yAxisID: 'y',
     },
     {
-      label: 'IORN Group',
+      label: 'Augmented IORN Group',
       data: iornData.map(function (iorn) {
-        return iorn.group.ordinal;
+        return [iorn.group.ordinal - 0.5, iorn.group.ordinal + 0.5];
       }),
       fill: false,
-      backgroundColor: 'rgb(182,107,220)',
-      borderColor: 'rgba(182,107,220, 0.2)',
+      backgroundColor: 'rgb(33,55,221)',
+      borderColor: 'rgba(33,55,221, 0.2)',
       yAxisID: 'y1',
       type: 'bar',
     },
@@ -372,16 +374,30 @@ const options = {
     y: {
       type: 'linear',
       display: true,
-      position: 'left',
+      position: 'right',
+      title: {
+        display: true,
+        text: 'CFS / ADL',
+      },
     },
     y1: {
       type: 'linear',
       display: true,
-      position: 'right',
+      position: 'left',
+      ticks: {
+        callback: label => {
+          console.log(label);
+          return label < 1 ? '' : String.fromCharCode(label + 64);
+        },
+      },
 
       // grid line settings
       grid: {
         drawOnChartArea: false, // only want the grid lines for one axis to show up
+      },
+      title: {
+        display: true,
+        text: 'Augmented IoRN Group',
       },
     },
   },
@@ -462,17 +478,17 @@ export function IornAugmented() {
           <Typography variant="body2" component="p">
             <li>
               {' '}
-              CFS: {iornData[11].cfs.ordinal} {iornData[11].cfs.value} on{' '}
-              {formatDate(iornData[11].cfs.date)}{' '}
+              Frailty Score: {iornData[11].cfs.ordinal} {iornData[11].cfs.value}{' '}
+              on {formatDate(iornData[11].cfs.date)}{' '}
             </li>
             <li>
               {' '}
-              IORN: {iornData[11].iornTotal.magnitude} on{' '}
-              {formatDate(iornData[11].iornTotal.date)}{' '}
+              ADL Score: {iornData[11].adlScore.magnitude} on{' '}
+              {formatDate(iornData[11].adlScore.date)}{' '}
             </li>
             <li>
               {' '}
-              Group: {iornData[11].group.ordinal} {iornData[11].group.value} on{' '}
+              Augmented IoRN Group: {iornData[11].group.value} on{' '}
               {formatDate(iornData[11].group.date)}{' '}
             </li>
           </Typography>
