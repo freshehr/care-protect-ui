@@ -448,9 +448,6 @@ export function Nutrition() {
     );
   }
 
-  const today: string = new Date().toISOString().slice(0, 10);
-
-  console.log(today);
   return (
     <>
       <Grid
@@ -496,7 +493,7 @@ export function Nutrition() {
                     fullWidth
                     type="date"
                     variant="outlined"
-                    defaultValue={today}
+                    defaultValue={new Date().toISOString().slice(0, 10)}
                   />
                 </Grid>
                 <Grid item xs={12}>

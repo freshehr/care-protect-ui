@@ -10,6 +10,12 @@ import {
   Card,
   CardContent,
   CardActions,
+  InputAdornment,
+  MenuItem,
+  Avatar,
+  ListItemText,
+  Select,
+  InputLabel,
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -24,10 +30,28 @@ import {
 import { actions } from './slice';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { Button, Dialog, NativeSelect, DialogTitle, Spinner } from 'components';
+import {
+  Button,
+  Dialog,
+  NativeSelect,
+  DialogTitle,
+  Spinner,
+  ErrorMsg,
+} from 'components';
 import { useForm } from 'react-hook-form';
 import { Line } from 'react-chartjs-2';
 import { formatDate } from '../../../utils/formatters/time';
+import VeryFit from '../Assessment/isbarContent/assests/very-fit.jpeg';
+import Well from '../Assessment/isbarContent/assests/well.jpeg';
+import ManagingWell from '../Assessment/isbarContent/assests/managing-well.jpeg';
+import Vulnerable from '../Assessment/isbarContent/assests/vulnerable.jpeg';
+import MildlyFrail from '../Assessment/isbarContent/assests/mildly-frail.jpeg';
+import ModeratelyFrail from '../Assessment/isbarContent/assests/moderately-frail.jpeg';
+import SeverelyFrail from '../Assessment/isbarContent/assests/severely-frail.jpeg';
+import VerySeverelyFrail from '../Assessment/isbarContent/assests/very-severely-frail.jpeg';
+import TerminallyIll from '../Assessment/isbarContent/assests/terminally-ill.jpeg';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import uniqid from 'uniqid';
 
 const useStyles = makeStyles({
   root: {
@@ -293,14 +317,14 @@ const iornData = [
   {
     cfs: {
       code: '840544004',
-      value: 'Severe',
+      value: '8. Very Severely Frail',
       terminology: 'local',
       ordinal: 8,
       date: '2020-12-10T00:00:00.000Z',
     },
     adlScore: {
       code: '840544004',
-      value: 'at00',
+      value: 'at0012',
       terminology: 'local',
       magnitude: 8,
       date: '2020-12-10T00:00:00.000Z',
@@ -312,6 +336,66 @@ const iornData = [
       ordinal: 7,
       date: '2020-12-10T00:00:00.000Z',
     },
+  },
+];
+
+const FRAILTY_OPTIONS = [
+  {
+    icon: VeryFit,
+    label: '1. Very Fit',
+    value: 'Very Fit',
+    code: 'at0005',
+    ordinal: 0,
+  },
+  { icon: Well, label: '2. Well', value: 'Well', code: 'at0006', ordinal: 1 },
+  {
+    icon: ManagingWell,
+    label: '3. Managing Well',
+    value: 'Managing Well',
+    code: 'at0007',
+    ordinal: 2,
+  },
+  {
+    icon: Vulnerable,
+    label: '4. Vurnerable',
+    value: 'Vurnerable',
+    code: 'at0008',
+    ordinal: 3,
+  },
+  {
+    icon: MildlyFrail,
+    label: '5. Mildly Frail',
+    value: 'Mildy Frail',
+    code: 'at0009',
+    ordinal: 4,
+  },
+  {
+    icon: ModeratelyFrail,
+    label: '6. Moderately Frail',
+    value: 'Moderately Frail',
+    code: 'at0010',
+    ordinal: 5,
+  },
+  {
+    icon: SeverelyFrail,
+    label: '7. Severely Frail',
+    value: 'Severely Frail',
+    code: 'at0011',
+    ordinal: 6,
+  },
+  {
+    icon: VerySeverelyFrail,
+    label: '8. Very SeverelyFrail',
+    value: 'Very Severely Frail',
+    code: 'at0012',
+    ordinal: 7,
+  },
+  {
+    icon: TerminallyIll,
+    label: '9. Terminally Ill',
+    value: 'Terminally Ill',
+    code: 'at0013',
+    ordinal: 8,
   },
 ];
 
@@ -386,8 +470,7 @@ const options = {
       position: 'left',
       ticks: {
         callback: label => {
-          console.log(label);
-          return label < 1 ? '' : String.fromCharCode(label + 64);
+          return label < 1 ? '' : String.fromCharCode(label + 64); //Convert ordinal to A-G
         },
       },
 
@@ -405,7 +488,7 @@ const options = {
 
 const LineChart = () => (
   <>
-    <h1>Augmented IORN</h1>
+    <h1>Augmented ioRN</h1>
     <Line data={lineData} options={options} type={'bar'} />
   </>
 );
@@ -478,8 +561,8 @@ export function IornAugmented() {
           <Typography variant="body2" component="p">
             <li>
               {' '}
-              Frailty Score: {iornData[11].cfs.ordinal} {iornData[11].cfs.value}{' '}
-              on {formatDate(iornData[11].cfs.date)}{' '}
+              Frailty Score: {iornData[11].cfs.value} on{' '}
+              {formatDate(iornData[11].cfs.date)}{' '}
             </li>
             <li>
               {' '}
@@ -488,7 +571,7 @@ export function IornAugmented() {
             </li>
             <li>
               {' '}
-              Augmented IoRN Group: {iornData[11].group.value} on{' '}
+              Augmented ioRN Group: {iornData[11].group.value} on{' '}
               {formatDate(iornData[11].group.date)}{' '}
             </li>
           </Typography>
@@ -544,71 +627,94 @@ export function IornAugmented() {
                 spacing={4}
               >
                 <Grid item xs={12}>
-                  <NativeSelect
-                    id="isolation-status-select"
-                    options={[
-                      {
-                        value: 'Isolation not required',
-                        label: 'Isolation not required',
-                      },
-
-                      {
-                        value: 'Isolating',
-                        label: 'Isolating',
-                      },
-                      {
-                        value: 'Isolating Completed',
-                        label: 'Isolating Completed',
-                      },
-                    ]}
-                    label="Isolation Status"
-                    name="isolationStatus"
-                    control={control}
-                    defaultValue={'Isolating Completed' || ''}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <NativeSelect
-                    id="isolation-reason-select"
-                    options={[
-                      {
-                        value: 'Symptoms (10 days)',
-                        label: 'Symptoms (10 days)',
-                      },
-
-                      {
-                        value: 'Tested Positive (10 days)',
-                        label: 'Tested Positive (10 days)',
-                      },
-                      {
-                        value:
-                          'Contact with Symptoms or Positive Case (14 days)',
-                        label:
-                          'Contact with Symptoms or Positive Case (14 days)',
-                      },
-                      {
-                        value: 'Following discharge (14 days)',
-                        label: 'Following discharge (14 days)',
-                      },
-                    ]}
-                    label="Isolation Reason"
-                    name="reasonForIsolation"
-                    control={control}
-                    defaultValue={'Tested Positive (10 days)'}
-                  />
-                </Grid>
-                <Grid item xs={12}>
                   <TextField
                     size="small"
-                    label="Isolation End Date"
-                    name={'isolationEndDate'}
+                    label="Date"
+                    name={'iornDate'}
                     type="date"
                     InputLabelProps={{ shrink: true }}
-                    defaultValue={'2021-01-14'}
+                    defaultValue={new Date().toISOString().slice(0, 10)}
                     fullWidth
                     variant="outlined"
                   />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    size="small"
+                    label="ADL Score"
+                    name={'adl-score'}
+                    InputLabelProps={{ shrink: true }}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputLabel id="demo-simple-select-label">
+                    Clinical Frailty Score
+                  </InputLabel>
+                  <Select
+                    labelId="cfs"
+                    id="cfs-select"
+                    fullWidth
+                    name={'cfs-score'}
+                  >
+                    <MenuItem value={'at0005'}>1. Very Fit</MenuItem>
+                    <MenuItem value={'at0006'}>2. Well</MenuItem>
+                    <MenuItem value={'at0007'}>3. Managing well</MenuItem>
+                    <MenuItem value={'at0008'}>4. Vulnerable</MenuItem>
+                    <MenuItem value={'at0009'}>5. Mildly Frail</MenuItem>
+                    <MenuItem value={'at0010'}>6. Moderately Frail</MenuItem>
+                    <MenuItem value={'at0011'}>7. Severely Frail</MenuItem>
+                    <MenuItem value={'at0012'}>8. Very Severely Frail</MenuItem>
+                    <MenuItem value={'at0013'}>9. Terminally Ill</MenuItem>
+                  </Select>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputLabel id="demo-simple-select-label">
+                    ioRN Group
+                  </InputLabel>
+                  <Select
+                    labelId="iornGroup"
+                    id="group-select"
+                    fullWidth
+                    name={'iorn-group'}
+                  >
+                    <MenuItem value={'at0080'}>
+                      A. Low Activities of Daily Living score + Low Risk &
+                      Behavioural Support Needs score.
+                    </MenuItem>
+                    <MenuItem value={'at0081'}>
+                      B. Low Activities of Daily Living score + High Risk &
+                      Behavioural Support Needs score.
+                    </MenuItem>
+                    <MenuItem value={'at0082'}>
+                      C. Medium Activities of Daily Living score + Low Risk &
+                      Behavioural Support Needs score.
+                    </MenuItem>
+                    <MenuItem value={'at0083'}>
+                      D. Medium Activities of Daily Living score + Medium Risk &
+                      Behavioural Support Needs score.
+                    </MenuItem>
+                    <MenuItem value={'at0084'}>
+                      E. Medium Activities of Daily Living score + High Risk &
+                      Behavioural Support Needs score.
+                    </MenuItem>
+                    <MenuItem value={'at0085'}>
+                      F. High Activities of Daily Living score + Low continence
+                      score + Low Risk & Behavioural Support Needs score.
+                    </MenuItem>
+                    <MenuItem value={'at0086'}>
+                      G. High Activities of Daily Living score + Low continence
+                      score + High Risk & Behavioural Support Needs score.
+                    </MenuItem>
+                    <MenuItem value={'at0087'}>
+                      H. High Activities of Daily Living score + High continence
+                      score.
+                    </MenuItem>
+                  </Select>
                 </Grid>
               </Grid>
             </form>
