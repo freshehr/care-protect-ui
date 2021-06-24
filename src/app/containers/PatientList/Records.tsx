@@ -18,6 +18,7 @@ import { Box, List, Toolbar, Grid, Typography } from '@material-ui/core';
 import { Card, CardContent, SortPoper, Sort, Spinner } from 'components';
 import { useStyles } from './styles';
 import Search from '../SearchPatientRecord';
+import { IornCharts } from './iornCharts';
 
 const Records = () => {
   useInjectReducer({ key: sliceKey, reducer });
@@ -50,6 +51,10 @@ const Records = () => {
           <Grid direction="row" alignItems="center" container>
             <Grid item xs={10} sm={11} md={11}>
               <Search />
+            </Grid>
+
+            <Grid item xs={10} sm={11} md={11}>
+              <IornCharts />
             </Grid>
             <Grid item>
               <SortPoper>

@@ -13,6 +13,7 @@ import {
   SepsisIcon,
   NewCareEventDialog,
   News2Icon,
+  IornIcon,
 } from 'components';
 import { patientListFromSaga } from '../PatientList/saga';
 import { useHistory } from 'react-router-dom';
@@ -178,12 +179,21 @@ const AcuityList = () => {
                             </Td>
                             <Td>
                               {assessment?.denwis?.value && (
+                                <IornIcon
+                                  label={true}
+                                  denwis={assessment?.denwis?.value}
+                                />
+                              )}
+                            </Td>
+                            <Td>
+                              {assessment?.denwis?.value && (
                                 <DenwisIcon
                                   label
                                   denwis={assessment?.denwis?.value}
                                 />
                               )}
                             </Td>
+
                             <Td>
                               {assessment?.covid?.value && (
                                 <CovidIcon
