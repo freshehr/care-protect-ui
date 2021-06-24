@@ -135,6 +135,20 @@ const Table: React.FC<Props> = ({
             </StyledTableSortLabel>
           </ColumnBadged>
           <ColumnBadged center>
+            <StyledTableSortLabel
+              active={orderBy === 'iorn'}
+              direction={getCurrentOrder('iorn')}
+              onClick={createSortHandler('iorn', getCurrentOrder('iorn'))}
+            >
+              IORN
+              {true ? (
+                <span className={classes.visuallyHidden}>
+                  {'sorted ascending'}
+                </span>
+              ) : null}
+            </StyledTableSortLabel>
+          </ColumnBadged>
+          <ColumnBadged center>
             COVID
             <SortPoper
               size="small"
