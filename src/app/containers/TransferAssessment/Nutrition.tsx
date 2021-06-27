@@ -27,6 +27,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Line } from 'react-chartjs-2';
 import { formatDate } from '../../../utils/formatters/time';
+import { nutritionData } from './datamodels/nutrition-aql.json';
+import { NutritionChart } from './NutritionChart';
 
 export function Nutrition() {
   const theme = useTheme();
@@ -39,278 +41,6 @@ export function Nutrition() {
 
   const covidStatus = useSelector(selectCovidStatus);
   const covideUpdateDate = useSelector(selectCovidStatusDate);
-
-  const useStyles = makeStyles({
-    root: {
-      minWidth: 275,
-    },
-    bullet: {
-      display: 'inline-block',
-      margin: '0 2px',
-      transform: 'scale(0.8)',
-    },
-    title: {
-      fontSize: 14,
-    },
-    pos: {
-      marginBottom: 12,
-    },
-  });
-
-  const nutritionData = [
-    {
-      height: {
-        magnitude: '156',
-        units: 'cm',
-        date: '2020-01-10T00:00:00.000Z',
-      },
-      weight: {
-        magnitude: '52',
-        units: 'kg',
-        date: '2020-01-10T00:00:00.000Z',
-      },
-      bmi: {
-        magnitude: '18.4',
-        units: 'kg/cm2',
-        date: '2020-01-10T00:00:00.000Z',
-      },
-      mustScore: {
-        magnitude: '4',
-        date: '2020-01-10T00:00:00.000Z',
-      },
-    },
-    {
-      height: {
-        magnitude: '156',
-        units: 'cm',
-        date: '2020-02-10T00:00:00.000Z',
-      },
-      weight: {
-        magnitude: '51.5',
-        units: 'kg',
-        date: '2020-02-10T00:00:00.000Z',
-      },
-      bmi: {
-        magnitude: '21.1',
-        units: 'kg/cm2',
-        date: '2020-02-10T00:00:00.000Z',
-      },
-      mustScore: {
-        magnitude: '1',
-        date: '2020-02-10T00:00:00.000Z',
-      },
-    },
-    {
-      height: {
-        magnitude: '156',
-        units: 'cm',
-        date: '2020-03-10T00:00:00.000Z',
-      },
-      weight: {
-        magnitude: '52.2',
-        units: 'kg',
-        date: '2020-03-10T00:00:00.000Z',
-      },
-      bmi: {
-        magnitude: '21.4',
-        units: 'kg/cm2',
-        date: '2020-03-10T00:00:00.000Z',
-      },
-      mustScore: {
-        magnitude: '0',
-        date: '2020-03-10T00:00:00.000Z',
-      },
-    },
-    {
-      height: {
-        magnitude: '156',
-        units: 'cm',
-        date: '2020-04-10T00:00:00.000Z',
-      },
-      weight: {
-        magnitude: '52.5',
-        units: 'kg',
-        date: '2020-04-10T00:00:00.000Z',
-      },
-      bmi: {
-        magnitude: '21.5',
-        units: 'kg/cm2',
-        date: '2020-04-10T00:00:00.000Z',
-      },
-      mustScore: {
-        magnitude: '0',
-        date: '2020-04-10T00:00:00.000Z',
-      },
-    },
-    {
-      height: {
-        magnitude: '156',
-        units: 'cm',
-        date: '2020-05-10T00:00:00.000Z',
-      },
-      weight: {
-        magnitude: '51.7',
-        units: 'kg',
-        date: '2020-05-10T00:00:00.000Z',
-      },
-      bmi: {
-        magnitude: '21.2',
-        units: 'kg/cm2',
-        date: '2020-05-10T00:00:00.000Z',
-      },
-      mustScore: {
-        magnitude: '0',
-        date: '2020-05-10T00:00:00.000Z',
-      },
-    },
-    {
-      height: {
-        magnitude: '156',
-        units: 'cm',
-        date: '2020-06-10T00:00:00.000Z',
-      },
-      weight: {
-        magnitude: '51.0',
-        units: 'kg',
-        date: '2020-06-10T00:00:00.000Z',
-      },
-      bmi: {
-        magnitude: '20.9',
-        units: 'kg/cm2',
-        date: '2020-06-10T00:00:00.000Z',
-      },
-      mustScore: {
-        magnitude: '0',
-        date: '2020-06-10T00:00:00.000Z',
-      },
-    },
-    {
-      height: {
-        magnitude: '156',
-        units: 'cm',
-        date: '2020-07-10T00:00:00.000Z',
-      },
-      weight: {
-        magnitude: '49.8',
-        units: 'kg',
-        date: '2020-07-10T00:00:00.000Z',
-      },
-      bmi: {
-        magnitude: '20.4',
-        units: 'kg/cm2',
-        date: '2020-07-10T00:00:00.000Z',
-      },
-      mustScore: {
-        magnitude: '1',
-        date: '2020-07-10T00:00:00.000Z',
-      },
-    },
-    {
-      height: {
-        magnitude: '156',
-        units: 'cm',
-        date: '2020-08-10T00:00:00.000Z',
-      },
-      weight: {
-        magnitude: '49.8',
-        units: 'kg',
-        date: '2020-08-10T00:00:00.000Z',
-      },
-      bmi: {
-        magnitude: '20.4',
-        units: 'kg/cm2',
-        date: '2020-08-10T00:00:00.000Z',
-      },
-      mustScore: {
-        magnitude: '1',
-        date: '2020-08-10T00:00:00.000Z',
-      },
-    },
-    {
-      height: {
-        magnitude: '156',
-        units: 'cm',
-        date: '2020-09-10T00:00:00.000Z',
-      },
-      weight: {
-        magnitude: '47.6',
-        units: 'kg',
-        date: '2020-09-10T00:00:00.000Z',
-      },
-      bmi: {
-        magnitude: '19.5',
-        units: 'kg/cm2',
-        date: '2020-09-10T00:00:00.000Z',
-      },
-      mustScore: {
-        magnitude: '2',
-        date: '2020-09-10T00:00:00.000Z',
-      },
-    },
-    {
-      height: {
-        magnitude: '156',
-        units: 'cm',
-        date: '2020-10-10T00:00:00.000Z',
-      },
-      weight: {
-        magnitude: '46.6',
-        units: 'kg',
-        date: '2020-10-10T00:00:00.000Z',
-      },
-      bmi: {
-        magnitude: '19.1',
-        units: 'kg/cm2',
-        date: '2020-10-10T00:00:00.000Z',
-      },
-      mustScore: {
-        magnitude: '3',
-        date: '2020-10-10T00:00:00.000Z',
-      },
-    },
-    {
-      height: {
-        magnitude: '156',
-        units: 'cm',
-        date: '2020-11-10T00:00:00.000Z',
-      },
-      weight: {
-        magnitude: '45.5',
-        units: 'kg',
-        date: '2020-11-10T00:00:00.000Z',
-      },
-      bmi: {
-        magnitude: '18.6',
-        units: 'kg/cm2',
-        date: '2020-11-10T00:00:00.000Z',
-      },
-      mustScore: {
-        magnitude: '3',
-        date: '2020-11-10T00:00:00.000Z',
-      },
-    },
-    {
-      height: {
-        magnitude: '156',
-        units: 'cm',
-        date: '2020-12-10T00:00:00.000Z',
-      },
-      weight: {
-        magnitude: '45',
-        units: 'kg',
-        date: '2020-12-10T00:00:00.000Z',
-      },
-      bmi: {
-        magnitude: '18.4',
-        units: 'kg/cm2',
-        date: '2020-12-10T00:00:00.000Z',
-      },
-      mustScore: {
-        magnitude: '4',
-        date: '2020-12-10T00:00:00.000Z',
-      },
-    },
-  ];
 
   const id = useSelector(selectID);
   const result = useSelector(selectResultCS);
@@ -331,77 +61,24 @@ export function Nutrition() {
   };
   const onSubmit = data => dispatch(actions.pending(data));
 
-  const lineData = {
-    labels: [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Ap',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sept',
-      'Oct',
-      'Nov',
-      'Dec',
-    ],
-    datasets: [
-      {
-        label: 'Weight',
-        data: nutritionData.map(function (nutrition) {
-          return nutrition.weight.magnitude;
-        }),
-        fill: false,
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgba(255, 99, 132, 0.2)',
-        yAxisID: 'y',
-      },
-      {
-        label: 'MUST Score',
-        data: nutritionData.map(function (nutrition) {
-          return nutrition.mustScore.magnitude;
-        }),
-        fill: false,
-        backgroundColor: 'rgb(39, 129, 37)',
-        borderColor: 'rgba(39, 129, 37, 0.2)',
-        yAxisID: 'y1',
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    stacked: false,
-    scales: {
-      y: {
-        type: 'linear',
-        display: true,
-        position: 'left',
-      },
-      y1: {
-        type: 'linear',
-        display: true,
-        position: 'right',
-        min: 0,
-        max: 10,
-
-        // grid line settings
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
-        },
-      },
-    },
-  };
-
-  const LineChart = () => (
-    <>
-      <h1>Nutrition</h1>
-      <Line data={lineData} options={options} type={'bar'} />
-    </>
-  );
-
   function NutritionCard() {
+    const useStyles = makeStyles({
+      root: {
+        minWidth: 275,
+      },
+      bullet: {
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
+      },
+      title: {
+        fontSize: 14,
+      },
+      pos: {
+        marginBottom: 12,
+      },
+    });
+
     const classes = useStyles();
 
     return (
@@ -458,7 +135,7 @@ export function Nutrition() {
       >
         <Grid item>
           <Grid item>
-            <LineChart />
+            <NutritionChart />
           </Grid>
           <Grid item>
             <NutritionCard />

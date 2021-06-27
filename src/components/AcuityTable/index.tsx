@@ -122,11 +122,11 @@ const Table: React.FC<Props> = ({
           </ColumnBadged>
           <ColumnBadged center>
             <StyledTableSortLabel
-              active={orderBy === 'denwis'}
-              direction={getCurrentOrder('denwis')}
-              onClick={createSortHandler('denwis', getCurrentOrder('denwis'))}
+              active={orderBy === 'iorn'}
+              direction={getCurrentOrder('iorn')}
+              onClick={createSortHandler('iorn', getCurrentOrder('iorn'))}
             >
-              DENWIS
+              IORN
               {true ? (
                 <span className={classes.visuallyHidden}>
                   {'sorted ascending'}
@@ -136,11 +136,11 @@ const Table: React.FC<Props> = ({
           </ColumnBadged>
           <ColumnBadged center>
             <StyledTableSortLabel
-              active={orderBy === 'iorn'}
-              direction={getCurrentOrder('iorn')}
-              onClick={createSortHandler('iorn', getCurrentOrder('iorn'))}
+              active={orderBy === 'denwis'}
+              direction={getCurrentOrder('denwis')}
+              onClick={createSortHandler('denwis', getCurrentOrder('denwis'))}
             >
-              IORN
+              DENWIS
               {true ? (
                 <span className={classes.visuallyHidden}>
                   {'sorted ascending'}

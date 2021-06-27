@@ -8,7 +8,7 @@ import News2Icon, { News2IconBadget } from './News2Icon';
 import SepsisIcon from './SepsisIcon';
 import CovidIcon from './CovidIcon';
 import DenwisIcon from './DenwisIcon';
-import IornIcon from './DenwisIcon';
+import IornIcon from './IornIcon';
 import { ClickableElement } from './ClickableElement';
 import NewCareEventDialog from './NewCareEventDialog';
 import { AppBar } from './Layout/AppBar';

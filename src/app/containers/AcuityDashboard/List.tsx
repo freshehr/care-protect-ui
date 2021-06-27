@@ -179,10 +179,7 @@ const AcuityList = () => {
                             </Td>
                             <Td>
                               {assessment?.denwis?.value && (
-                                <IornIcon
-                                  label={true}
-                                  denwis={assessment?.denwis?.value}
-                                />
+                                <IornIcon label={true} iorn={4} />
                               )}
                             </Td>
                             <Td>

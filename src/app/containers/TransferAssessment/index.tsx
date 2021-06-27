@@ -124,10 +124,12 @@ export function TransferAssessment() {
           >
             <Box p={1} width="100%">
               <Grid container justify="center" spacing={4}>
-                <Grid item xs={6} md={6}>
+                <Grid item xs={4} md={4}>
                   <Nutrition />
                 </Grid>
-                <Grid item xs={6} md={6}>
+                <Grid item xs={1} md={1}></Grid>
+
+                <Grid item xs={4} md={4}>
                   <IornAugmented />
                 </Grid>
               </Grid>
