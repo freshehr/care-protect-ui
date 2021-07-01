@@ -1,14 +1,13 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-
 import Records from './Records';
 
-export function PatientList() {
+export function IornDashboard() {
   return (
     <>
       <Helmet>
-        <title>{'Patient List'}</title>
-        <meta name="description" content={'A Patient List'} />
+        <title>{'IoRN Dashboard'}</title>
+        <meta name="description" content={'IorN Dashboard'} />
       </Helmet>
       <Records />
     </>

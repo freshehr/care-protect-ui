@@ -29,6 +29,7 @@ import Login from './containers/Login';
 
 import Layout from 'components/Layout';
 import { TransferAssessment } from './containers/TransferAssessment';
+import { IornDashboard } from './containers/IornDashboard';
 
 export function App() {
   useInjectReducer({ key: 'session', reducer: sessionReducer });
@@ -62,7 +63,7 @@ export function App() {
           />
           <ProtectedRoute
             exact
-            header="Acuity Dasboard"
+            header="Acuity Dashboard"
             path={process.env.PUBLIC_URL + '/dashboard'}
             component={AcuityDashboard}
             authenticated={authenticated}
@@ -85,10 +86,12 @@ export function App() {
           />
           <ProtectedRoute
             exact
-            path={process.env.PUBLIC_URL + '/sbri-dash/:id'}
-            component={InfectionControl}
+            header="IoRN Dashboard"
+            path={process.env.PUBLIC_URL + '/iorn-dashboard'}
+            component={IornDashboard}
             authenticated={authenticated}
             username={auth}
+            bottomToolBar
           />
           <ProtectedRoute
             exact

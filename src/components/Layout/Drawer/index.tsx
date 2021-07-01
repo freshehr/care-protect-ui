@@ -110,6 +110,27 @@ export const Drawer: React.FC<Props> = ({ open, onClose }) => {
             className={navPath === '/tasks' ? classes.selected : undefined}
           />
         </ListItem>
+        <ListItem
+          button
+          key={'/iorn-dashboard'}
+          id={'/iorn-dashboard'}
+          selected={navPath === '/iorn-dashboard'}
+          onClick={handleChange}
+        >
+          <ListItemIcon
+            className={
+              navPath === '/iorn-dashboard' ? classes.selected : undefined
+            }
+          >
+            <AssignmentIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary={'IORN Dashboard'}
+            className={
+              navPath === '/iorn-dashboard' ? classes.selected : undefined
+            }
+          />
+        </ListItem>
       </List>
       <Divider />
       <List>

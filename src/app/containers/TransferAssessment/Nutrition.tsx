@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   TextField,
@@ -25,214 +25,59 @@ import { useForm } from 'react-hook-form';
 import { useTheme } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { Line } from 'react-chartjs-2';
-import { formatDate } from '../../../utils/formatters/time';
-import { nutritionData } from './datamodels/nutrition-aql.json';
-import { NutritionChart } from './NutritionChart';
 
-export function Nutrition() {
+import { formatDate } from '../../../utils/formatters/time';
+import { NutritionChart } from './NutritionChart';
+import { NutritionCard } from './NutritionCard';
+
+export function Nutrition(props: { resultSet: any }) {
   const theme = useTheme();
   const small = useMediaQuery(theme.breakpoints?.between('xs', 'sm'));
   const large = useMediaQuery(theme.breakpoints?.up(1280));
 
-  const dispatch = useDispatch();
-  const { control, handleSubmit } = useForm();
-  const [open, setOpen] = React.useState(false);
+  const resultSet = props.resultSet;
 
-  const covidStatus = useSelector(selectCovidStatus);
-  const covideUpdateDate = useSelector(selectCovidStatusDate);
+  if (resultSet === undefined || resultSet.length == 0) return null;
 
-  const id = useSelector(selectID);
-  const result = useSelector(selectResultCS);
-  const { pending, success, error } = result;
-
-  React.useEffect(() => {
-    if (success) {
-      dispatch(actions.loadInfectionControl(id));
-      setOpen(false);
-    }
-  }, [success, id, dispatch]);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const onSubmit = data => dispatch(actions.pending(data));
-
-  function NutritionCard() {
-    const useStyles = makeStyles({
-      root: {
-        minWidth: 275,
+  const nutritionData: any = resultSet.map(row => {
+    const out: any = {
+      height: {
+        magnitude: row[3],
+        units: 'cm',
+        date: row[2],
       },
-      bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
+      weight: {
+        magnitude: row[4],
+        units: 'kg',
+        date: row[2],
       },
-      title: {
-        fontSize: 14,
+      bmi: {
+        magnitude: row[5],
+        units: 'kg/cm2',
+        date: row[2],
       },
-      pos: {
-        marginBottom: 12,
+      mustScore: {
+        magnitude: row[6],
+        date: row[2],
       },
-    });
+    };
 
-    const classes = useStyles();
-
-    return (
-      <Card className={classes.root}>
-        <CardContent>
-          <Typography
-            className={classes.title}
-            color="textSecondary"
-            gutterBottom
-          >
-            Most recent records
-          </Typography>
-          <Typography variant="body2" component="p">
-            <li>
-              {' '}
-              Weight: {nutritionData[11].weight.magnitude}{' '}
-              {nutritionData[11].weight.units} on{' '}
-              {formatDate(nutritionData[11].weight.date)}{' '}
-            </li>
-            <li>
-              {' '}
-              Height: {nutritionData[11].height.magnitude}{' '}
-              {nutritionData[11].height.units} on{' '}
-              {formatDate(nutritionData[11].height.date)}{' '}
-            </li>
-            <li>
-              {' '}
-              MUST score: {nutritionData[11].mustScore.magnitude} on{' '}
-              {formatDate(nutritionData[11].mustScore.date)}{' '}
-            </li>
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button.Secondary
-            size="small"
-            variant="outlined"
-            color="secondary"
-            onClick={handleOpen}
-          >
-            New record
-          </Button.Secondary>
-        </CardActions>
-      </Card>
-    );
-  }
+    return out;
+  });
 
   return (
-    <>
-      <Grid
-        container
-        direction="column"
-        justify="space-between"
-        style={{ height: `${small ? 'auto' : large ? '100%' : '800px'}` }}
-      >
-        <Grid item>
-          <Grid item>
-            <NutritionChart />
-          </Grid>
-          <Grid item>
-            <NutritionCard />
-          </Grid>
-        </Grid>
+    <Grid
+      container
+      direction="column"
+      justify="space-between"
+      style={{ height: `${small ? 'auto' : large ? '100%' : '800px'}` }}
+    >
+      <Grid item>
+        <NutritionChart nutritionData={nutritionData} />
       </Grid>
-
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle id="title" onClose={handleClose}>
-          <Typography component="div" noWrap variant="h6">
-            Update Nutrition Record
-          </Typography>
-        </DialogTitle>
-        <DialogContent>
-          {error && <p>{error}</p>}
-          {pending && <Spinner />}
-          <Box m={4}>
-            <form id="nutrition-status-form" onSubmit={handleSubmit(onSubmit)}>
-              <Grid
-                container
-                direction="column"
-                justify="flex-start"
-                alignItems="stretch"
-                spacing={4}
-              >
-                <Grid item xs={12}>
-                  <TextField
-                    size="small"
-                    label="Date"
-                    name={'date'}
-                    InputLabelProps={{ shrink: true }}
-                    fullWidth
-                    type="date"
-                    variant="outlined"
-                    defaultValue={new Date().toISOString().slice(0, 10)}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    size="small"
-                    label="Height"
-                    name={'height'}
-                    InputLabelProps={{ shrink: true }}
-                    fullWidth
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    size="small"
-                    label="Weight"
-                    name={'weight'}
-                    InputLabelProps={{ shrink: true }}
-                    fullWidth
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography id="discrete-slider-small-steps" gutterBottom>
-                    MUST score
-                  </Typography>
-                  <Slider
-                    aria-labelledby="discrete-slider-always"
-                    step={1}
-                    valueLabelDisplay="on"
-                    marks
-                    min={0}
-                    max={10}
-                  />
-                </Grid>
-              </Grid>
-            </form>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Grid
-            container
-            direction="row"
-            justify="flex-end"
-            alignItems="flex-end"
-            spacing={2}
-          >
-            <Grid item>
-              <Button.Primary onClick={handleClose}>Cancel</Button.Primary>
-            </Grid>
-            <Grid item>
-              <Button.Secondary
-                variant="contained"
-                type="submit"
-                form="nutrition-status-form"
-              >
-                Confirm
-              </Button.Secondary>
-            </Grid>
-          </Grid>
-        </DialogActions>
-      </Dialog>
-    </>
+      <Grid item>
+        <NutritionCard nutritionData={nutritionData} />
+      </Grid>
+    </Grid>
   );
 }
