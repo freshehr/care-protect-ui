@@ -24,11 +24,11 @@ import {
 } from '@material-ui/core';
 
 import { useStyles } from './style';
-import CloseIcon from '@material-ui/icons/Close';
+import Header from '../Patient/Header';
 
 import {
   Card,
-  CardContent,
+  Record,
   AppBarSubpage,
   Spinner,
   Button,
@@ -96,16 +96,8 @@ export function Assessment() {
         <meta name="description" content={`A Assessment Event- ${header}`} />
       </Helmet>
 
-      <AppBarSubpage header={`Assessment: ${header}`}>
-        <IconButton
-          color="inherit"
-          onClick={handleOpen}
-          edge="start"
-          className={classes.closeButton}
-        >
-          <CloseIcon />
-        </IconButton>
-      </AppBarSubpage>
+      <Header title={`Assessment: ${header}`} />
+
       <Box mr={1} ml={1}>
         <Card
           name={patient?.name}
@@ -113,7 +105,7 @@ export function Assessment() {
           assesments={patient?.assessment}
           id={patient?.id}
         >
-          <CardContent
+          <Record
             birthDate={patient?.birthDate}
             gender={patient?.gender}
             location={patient?.location}

@@ -1,6 +1,5 @@
 import Layout from './Layout';
-import Card from './Card';
-import CardContent from './CardContent';
+import Card, { Record } from './Card';
 import BoxWrapper from './BoxWrapper';
 import SortPoper from './SortPoper';
 import Sort from './Sort';
@@ -34,7 +33,7 @@ import { SelectItem } from './SelectItem';
 export {
   Layout,
   Card,
-  CardContent,
+  Record,
   BoxWrapper,
   SortPoper,
   Sort,

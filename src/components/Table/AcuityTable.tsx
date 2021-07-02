@@ -137,9 +137,10 @@ const Acuity: React.FC<Props> = ({
           <ColumnBadged center>
             COVID
             <SortPoper
-              size="small"
+              small
               icon={
                 <CovidIcon
+                  small={true}
                   value={{
                     suspectedCovidStatus: COVID_FLAG,
                     dateIsolationDueToEnd: null,
@@ -158,8 +159,8 @@ const Acuity: React.FC<Props> = ({
           <ColumnBadged center>
             SEPSIS
             <SortPoper
-              size="small"
-              icon={<SepsisIcon value={{ value: SEPSIS_FLAG }} />}
+              small
+              icon={<SepsisIcon small value={{ value: SEPSIS_FLAG }} />}
             >
               <Sort
                 onFilterSort={onRequestSort}

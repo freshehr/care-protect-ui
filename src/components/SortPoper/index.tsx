@@ -3,6 +3,7 @@ import { IconButton } from '@material-ui/core';
 import { PopoverOrigin } from '@material-ui/core/Popover';
 import SortIcon from '@material-ui/icons/Sort';
 import Menu from '../Menu';
+import styled from 'styled-components';
 
 const POPER_ORIGIN: PopoverOrigin = {
   vertical: 'top',
@@ -11,10 +12,10 @@ const POPER_ORIGIN: PopoverOrigin = {
 interface Props {
   children: React.ReactNode;
   icon?: React.ReactNode;
-  size?: 'small';
+  small?: boolean;
 }
 
-const SortPoper: React.FC<Props> = ({ children, icon, size }) => {
+const SortPoper: React.FC<Props> = ({ children, icon, small }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const open = Boolean(anchorEl);
@@ -31,7 +32,7 @@ const SortPoper: React.FC<Props> = ({ children, icon, size }) => {
         ref={buttonRef}
         onClick={handleMenu}
         data-testid="sortPoper-button"
-        {...(size ? { style: { padding: 0 } } : {})}
+        style={{ padding: small ? '0px' : '12px' }}
       >
         {icon || <SortIcon />}
       </IconButton>

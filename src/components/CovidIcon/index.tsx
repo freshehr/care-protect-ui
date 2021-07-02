@@ -2,16 +2,24 @@ import React from 'react';
 
 import { Label, IconButton } from '../IconButton';
 
-const CovidIcon = ({ value, label = false }) => {
+const CovidIcon: React.FC<{ value: any; label?: boolean; small?: boolean }> = ({
+  value,
+  label = false,
+  small,
+}) => {
+  console.log('small', small);
   return (
-    <IconButton onClick={() => console.log('a')}>
+    <IconButton
+      onClick={() => console.log('a')}
+      style={{ padding: small ? '0px' : '12px' }}
+    >
       <Covid value={value} />
       {label && <Label>COVID</Label>}
     </IconButton>
   );
 };
 
-export const CovidIconBadget = ({ value }) => {
+export const CovidIconBadget = ({ value, small = false }) => {
   return <Covid value={value} width="18px" />;
 };
 

@@ -6,7 +6,7 @@ const Text: React.FC<{
   children?: string | null;
 }> = ({ label, children }) => (
   <Typography variant="subtitle1" component="div">
-    <Box component="div" display="inline" fontWeight="fontWeightBold">
+    <Box component="div" display="inline" fontWeight="fontWeightBold" mr={1}>
       {label}:
     </Box>
     {children && (

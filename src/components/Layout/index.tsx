@@ -29,6 +29,7 @@ interface Props {
   bottomToolBar?: boolean;
   username?: string;
   logout?: any;
+  newLayout?: boolean;
 }
 const Layout: React.FC<Props> = ({
   header,
@@ -37,6 +38,7 @@ const Layout: React.FC<Props> = ({
   username,
   logout,
   bottomToolBar,
+  newLayout,
 }) => {
   const classes = useStyles({ login });
   const theme = useTheme();
@@ -151,7 +153,7 @@ const Layout: React.FC<Props> = ({
               [classes.contentShift]: false,
             })}
           >
-            <div className={classes.drawerHeader} />
+            {!newLayout && <div className={classes.drawerHeader} />}
             {children}
           </main>
         </>

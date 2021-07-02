@@ -15,7 +15,7 @@ import {
 } from './selectors';
 
 import { Box, List, Toolbar, Grid, Typography } from '@material-ui/core';
-import { Card, CardContent, SortPoper, Sort, Spinner } from 'components';
+import { Card, Record, SortPoper, Sort, Spinner } from 'components';
 import { useStyles } from './styles';
 import Search from '../SearchPatientRecord';
 
@@ -88,7 +88,7 @@ const Records = () => {
                       assesments={assessment}
                       id={id}
                     >
-                      <CardContent
+                      <Record
                         birthDate={birthDate}
                         gender={gender}
                         location={location}

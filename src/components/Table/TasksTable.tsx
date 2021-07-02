@@ -122,7 +122,7 @@ const Tasks: React.FC<Props> = ({
 
           <ColumnBadged center>
             Status
-            <SortPoper size="small" icon={<FilterListIcon htmlColor="#fff" />}>
+            <SortPoper small icon={<FilterListIcon htmlColor="#fff" />}>
               <Box m={1} p={1}>
                 {/* <FormControlLabel
                   control={

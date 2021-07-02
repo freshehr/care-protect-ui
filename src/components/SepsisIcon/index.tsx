@@ -22,12 +22,20 @@ const useStyles = makeStyles(() => ({
 
 interface Props {
   label?: boolean;
+  small?: boolean;
 }
-const SepsisIcon: React.FC<ISepsis & Props> = ({ value, label = false }) => {
+const SepsisIcon: React.FC<ISepsis & Props> = ({
+  value,
+  label = false,
+  small = false,
+}) => {
   const classes = useStyles();
   if (value === null) return null;
   return (
-    <IconButton onClick={() => console.log('a')}>
+    <IconButton
+      onClick={() => console.log('a')}
+      style={{ padding: small ? '0px' : '12px' }}
+    >
       <SvgIcon
         component={EmojiFlagsTwoToneIcon}
         className={clsx(classes[value?.value], classes.root)}

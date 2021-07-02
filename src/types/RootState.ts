@@ -12,7 +12,7 @@ import { InfectionControl } from 'app/containers/InfectionControl/types';
 import { AssessmentEvent } from 'app/containers/Assessment/types';
 import { PatientOverview } from 'app/containers/PatientOverview/types';
 import { SearchPatientRecord } from 'app/containers/SearchPatientRecord/types';
-
+import { PatientState } from 'app/containers/Patient/types';
 export interface RootState {
   theme?: ThemeState;
   session?: any;
@@ -22,4 +22,5 @@ export interface RootState {
   infectionControl?: InfectionControl;
   patientOverview?: PatientOverview;
   searchPatientRecord?: SearchPatientRecord;
+  patient?: PatientState;
 }

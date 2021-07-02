@@ -12,10 +12,17 @@ export const ButtonSuccess = withStyles(() => ({
 }))(MuiButton);
 
 export const ButtonSecondary = withStyles((theme: Theme) => ({
+  root: {
+    minWidth: '100%',
+    borderRadius: '35px',
+    padding: '10px 15px',
+    color: '#e94e1b',
+    textTransform: 'none',
+  },
   contained: {
     minWidth: '100%',
     backgroundColor: '#EE7402',
-    color: theme.palette.secondary.contrastText,
+    color: '#fff',
     '&:hover': {
       backgroundColor: '#e94e1b',
       boxShadow: 'none',
@@ -30,11 +37,6 @@ export const ButtonSecondary = withStyles((theme: Theme) => ({
       boxShadow: '0 0 0 0.2rem rgba(0,123,255,.5)',
       color: '#00000',
     },
-  },
-  root: {
-    minWidth: '100%',
-    borderRadius: '35px',
-    padding: '10px 15px',
   },
 }))(MuiButton);
 

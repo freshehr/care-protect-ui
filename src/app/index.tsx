@@ -26,6 +26,7 @@ import { PatientList } from './containers/PatientList/';
 import { PatientOverview } from './containers/PatientOverview';
 import Login from './containers/Login';
 import { TasksList } from './containers/TasksList';
+import { AdminPage } from './containers/Admin';
 
 import Layout from 'components/Layout';
 
@@ -73,6 +74,15 @@ export function App() {
             header="Tasks List"
             path={process.env.PUBLIC_URL + '/tasks'}
             component={TasksList}
+            authenticated={authenticated}
+            username={auth}
+            bottomToolBar
+          />
+          <ProtectedRoute
+            exact
+            header="Admin Page"
+            path={process.env.PUBLIC_URL + '/admin'}
+            component={AdminPage}
             authenticated={authenticated}
             username={auth}
             bottomToolBar

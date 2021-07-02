@@ -6,13 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { sliceKey, actions, reducer } from './slice';
 import { patientOverviewSaga } from './saga';
 
-import {
-  Spinner,
-  AppBarSubpage,
-  Card,
-  CardContent,
-  Carousel,
-} from 'components';
+import { Spinner, AppBarSubpage, Card, Record, Carousel } from 'components';
 import { IconButton, Box, Typography } from '@material-ui/core';
 import { selectError, selectLoading, selectPatient } from './selectors';
 import CloseIcon from '@material-ui/icons/Close';
@@ -103,7 +97,7 @@ export function PatientOverview() {
               assesments={patient?.assessment}
               id={patient?.id || ''}
             >
-              <CardContent
+              <Record
                 birthDate={patient?.birthDate || ''}
                 gender={patient?.gender || ''}
                 location={patient?.location || ''}
