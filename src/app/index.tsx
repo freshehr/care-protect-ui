@@ -98,6 +98,7 @@ export function App() {
             exact
             path={process.env.PUBLIC_URL + '/patient-overview/:id'}
             component={PatientOveriview2}
+            newLayout
             authenticated={authenticated}
             username={auth}
           />
@@ -134,14 +135,25 @@ function ProtectedRoute({ component: Component, ...rest }) {
       {...rest}
       render={props =>
         rest.authenticated ? (
-          <Layout
-            header={rest.header}
-            bottomToolBar={Boolean(rest.bottomToolBar)}
-            username={rest.username}
-            logout={handleLogout}
-          >
-            <Component {...props} />
-          </Layout>
+          rest.newLayout ? (
+            <Layout
+              newLayout
+              bottomToolBar={Boolean(rest.bottomToolBar)}
+              username={rest.username}
+              logout={handleLogout}
+            >
+              <Component {...props} />
+            </Layout>
+          ) : (
+            <Layout
+              header={rest.header}
+              bottomToolBar={Boolean(rest.bottomToolBar)}
+              username={rest.username}
+              logout={handleLogout}
+            >
+              <Component {...props} />
+            </Layout>
+          )
         ) : (
           <Redirect
             to={{
