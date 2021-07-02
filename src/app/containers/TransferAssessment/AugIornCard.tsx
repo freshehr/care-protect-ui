@@ -43,7 +43,7 @@ export function AugIornCard(props) {
 
   const useStyles = makeStyles({
     root: {
-      minWidth: 275,
+      minWidth: 100,
     },
     bullet: {
       display: 'inline-block',
@@ -65,33 +65,34 @@ export function AugIornCard(props) {
   const latestAugIornData = props.augIornData[props.augIornData.length - 1];
 
   return (
-    <>
+    <Grid>
       <Card className={classes.root}>
         <CardContent>
-          <Typography
-            className={classes.title}
-            color="textSecondary"
-            gutterBottom
-          >
-            Most recent records
-          </Typography>
           <Typography variant="body2" component="p">
-            <li>
-              {' '}
-              Frailty Score: {latestAugIornData.cfs.value} [
-              {latestAugIornData.cfs.ordinal}] on{' '}
-              {formatDate(latestAugIornData.cfs.date)}{' '}
-            </li>
-            <li>
-              {' '}
-              ADL Score: {latestAugIornData.adlScore.magnitude} on{' '}
-              {formatDate(latestAugIornData.adlScore.date)}{' '}
-            </li>
-            <li>
-              {' '}
-              Augmented ioRN Group: {latestAugIornData.group.value} on{' '}
-              {formatDate(latestAugIornData.group.date)}{' '}
-            </li>
+            <Typography
+              className={classes.title}
+              color="textSecondary"
+              gutterBottom
+            >
+              Most recent records
+            </Typography>
+            <ul>
+              <li>
+                {` Frailty Score: ${latestAugIornData.cfs.value} [${
+                  latestAugIornData.cfs.ordinal
+                }] on ${formatDate(latestAugIornData.cfs.date)}`}
+              </li>
+              <li>
+                {' '}
+                ADL Score: {latestAugIornData.adlScore.magnitude} on{' '}
+                {formatDate(latestAugIornData.adlScore.date)}{' '}
+              </li>
+              <li>
+                {' '}
+                Augmented ioRN Group: {latestAugIornData.group.value} on{' '}
+                {formatDate(latestAugIornData.group.date)}{' '}
+              </li>
+            </ul>
           </Typography>
         </CardContent>
         <CardActions>
@@ -241,6 +242,6 @@ export function AugIornCard(props) {
           </Grid>
         </DialogActions>
       </Dialog>
-    </>
+    </Grid>
   );
 }

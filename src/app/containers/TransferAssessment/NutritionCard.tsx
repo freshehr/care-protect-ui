@@ -37,7 +37,7 @@ export function NutritionCard(props) {
 
   const useStyles = makeStyles({
     root: {
-      minWidth: 275,
+      minWidth: 100,
     },
     bullet: {
       display: 'inline-block',
@@ -59,7 +59,7 @@ export function NutritionCard(props) {
   const nutritionLatest = props.nutritionData[props.nutritionData.length - 1];
 
   return (
-    <>
+    <Grid>
       <Card className={classes.root}>
         <CardContent>
           <Typography
@@ -191,6 +191,6 @@ export function NutritionCard(props) {
           </Grid>
         </DialogActions>
       </Dialog>
-    </>
+    </Grid>
   );
 }
