@@ -74,8 +74,6 @@ export function Nutrition(props: { resultSet: any }) {
     >
       <Grid item>
         <NutritionChart nutritionData={nutritionData} />
-      </Grid>
-      <Grid item>
         <NutritionCard nutritionData={nutritionData} />
       </Grid>
     </Grid>

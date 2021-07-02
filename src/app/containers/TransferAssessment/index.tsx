@@ -34,25 +34,23 @@ export function TransferAssessment() {
 
   const [resultSet, setResultSet] = useState([]);
 
-  const aql =
-    'SELECT \n' +
-    '       c/uid/value as uid,\n' +
-    '       e/ehr_id/value as ehrId,\n' +
-    '       c/context/start_time/value as obsDate,\n' +
-    '       u/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/magnitude AS Height,\n' +
-    '       i/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/magnitude AS Weight,\n' +
-    '       w/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/magnitude AS Body_mass_index,\n' +
-    '       o/data[at0001]/events[at0002]/data[at0003]/items[at0015]/value/magnitude AS MUST_score,\n' +
-    '       b/data[at0001]/events[at0002]/data[at0003]/items[at0079]/value/defining_code/code_string AS AIorNGroupCode,\n' +
-    '             b/data[at0001]/events[at0002]/data[at0003]/items[at0079]/value/value AS AIorNGroupText,\n' +
-    '       f/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/value AS CFSOrdinal,\n' +
-    '       f/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/symbol/value AS CFSText\n' +
-    '       f/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/symbol/defining_code/code_string AS CFSCode\n' +
-    "FROM EHR e[ehr_id/value = '3e674739-950c-4b8a-976b-5aef21c618c5']\n" +
-    'CONTAINS COMPOSITION c[openEHR-EHR-COMPOSITION.report.v1] \n' +
-    'CONTAINS (OBSERVATION u[openEHR-EHR-OBSERVATION.height.v2] or OBSERVATION i[openEHR-EHR-OBSERVATION.body_weight.v2] or OBSERVATION w[openEHR-EHR-OBSERVATION.body_mass_index.v2] or OBSERVATION o[openEHR-EHR-OBSERVATION.must.v0] and OBSERVATION b[openEHR-EHR-OBSERVATION.augmented_iorn.v0] or OBSERVATION f[openEHR-EHR-OBSERVATION.clinical_frailty_scale.v1])\n' +
-    "WHERE c/name/value = 'Transfer assessment'\n" +
-    'ORDER BY c/context/start_time/value ASC';
+  const aql = `SELECT c/uid/value AS uid,
+    e/ehr_id/value AS ehrId,
+    c/context/start_time/value AS obsDate,
+    u/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/magnitude AS Height,
+  i/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/magnitude AS Weight,
+  w/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/magnitude AS Body_mass_index,
+  o/data[at0001]/events[at0002]/data[at0003]/items[at0015]/value/magnitude AS MUST_score,
+  b/data[at0001]/events[at0002]/data[at0003]/items[at0079]/value/defining_code/code_string AS AIorNGroupCode,
+  b/data[at0001]/events[at0002]/data[at0003]/items[at0079]/value/value AS AIorNGroupText,
+  f/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/value AS CFSOrdinal,
+  f/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/symbol/value AS CFSText,
+  f/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/symbol/defining_code/code_string AS CFSCode
+  FROM EHR e[ehr_id/value = '3e674739-950c-4b8a-976b-5aef21c618c5']
+  CONTAINS COMPOSITION c[openEHR-EHR-COMPOSITION.report.v1]
+  CONTAINS (OBSERVATION u[openEHR-EHR-OBSERVATION.height.v2] or OBSERVATION i[openEHR-EHR-OBSERVATION.body_weight.v2] or OBSERVATION w[openEHR-EHR-OBSERVATION.body_mass_index.v2] or OBSERVATION o[openEHR-EHR-OBSERVATION.must.v0] and OBSERVATION b[openEHR-EHR-OBSERVATION.augmented_iorn.v0] or OBSERVATION f[openEHR-EHR-OBSERVATION.clinical_frailty_scale.v1])
+  WHERE c/name/value = 'Transfer assessment'
+  ORDER BY c/context/start_time/value ASC`;
 
   const config: AxiosRequestConfig = {
     method: 'post',

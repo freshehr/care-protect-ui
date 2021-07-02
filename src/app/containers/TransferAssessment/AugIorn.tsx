@@ -185,10 +185,9 @@ export function AugIorn(props: { resultSet: any }) {
     >
       <Grid item>
         <AugIornChart augIornData={augIornData} />
-      </Grid>
-      <Grid item>
         <AugIornCard augIornData={augIornData} />
       </Grid>
+      <Grid item></Grid>
     </Grid>
   );
 }

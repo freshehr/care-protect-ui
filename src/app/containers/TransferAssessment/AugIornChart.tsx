@@ -20,18 +20,18 @@ export const AugIornChart = props => {
       'Dec',
     ],
     datasets: [
-      {
-        label: 'ADL score',
-        data: iornData.map(iorn => {
-          return iorn.adlScore.magnitude;
-        }),
-        fill: false,
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgba(255, 99, 132, 0.2)',
-        yAxisID: 'y',
-        min: 1,
-        max: 15,
-      },
+      // {
+      //   label: 'ADL score',
+      //   data: iornData.map(iorn => {
+      //     return iorn.adlScore.magnitude;
+      //   }),
+      //   fill: false,
+      //   backgroundColor: 'rgb(255, 99, 132)',
+      //   borderColor: 'rgba(255, 99, 132, 0.2)',
+      //   yAxisID: 'y',
+      //   min: 1,
+      //   max: 15,
+      // },
       {
         label: 'Frailty',
         data: iornData.map(iorn => {

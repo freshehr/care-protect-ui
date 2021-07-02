@@ -29,12 +29,10 @@ export function NutritionCard(props) {
 
   const { pending, success, error } = result;
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  const handleClose = () => setOpen(false);
+
+  const handleOpen = () => setOpen(true);
+
   const onSubmit = data => dispatch(actions.pending(data));
 
   const useStyles = makeStyles({
