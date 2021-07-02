@@ -23,7 +23,7 @@ import { Assessment } from './containers/Assessment';
 import { InfectionControl } from './containers/InfectionControl';
 import { NotFoundPage } from 'components/NotFoundPage/Loadable';
 import { PatientList } from './containers/PatientList/';
-import { PatientOverview } from './containers/PatientOverview';
+import { PatientOveriview2 } from './containers/PatientOverview2';
 import Login from './containers/Login';
 import { TasksList } from './containers/TasksList';
 import { AdminPage } from './containers/Admin';
@@ -97,7 +97,7 @@ export function App() {
           <ProtectedRoute
             exact
             path={process.env.PUBLIC_URL + '/patient-overview/:id'}
-            component={PatientOverview}
+            component={PatientOveriview2}
             authenticated={authenticated}
             username={auth}
           />
