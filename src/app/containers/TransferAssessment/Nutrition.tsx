@@ -66,16 +66,9 @@ export function Nutrition(props: { resultSet: any }) {
   });
 
   return (
-    <Grid
-      container
-      direction="column"
-      justify="space-between"
-      style={{ height: `${small ? 'auto' : large ? '100%' : '800px'}` }}
-    >
-      <Grid item>
-        <NutritionChart nutritionData={nutritionData} />
-        <NutritionCard nutritionData={nutritionData} />
-      </Grid>
+    <Grid item>
+      <NutritionChart nutritionData={nutritionData} />
+      <NutritionCard nutritionData={nutritionData} />
     </Grid>
   );
 }

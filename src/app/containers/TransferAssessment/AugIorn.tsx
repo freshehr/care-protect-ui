@@ -177,17 +177,9 @@ export function AugIorn(props: { resultSet: any }) {
   const handleClose = () => setOpen(false);
 
   return (
-    <Grid
-      container
-      direction="column"
-      justify="space-between"
-      style={{ height: `${small ? 'auto' : large ? '100%' : '800px'}` }}
-    >
-      <Grid item>
-        <AugIornChart augIornData={augIornData} />
-        <AugIornCard augIornData={augIornData} />
-      </Grid>
-      <Grid item></Grid>
+    <Grid item>
+      <AugIornChart augIornData={augIornData} />
+      <AugIornCard augIornData={augIornData} />
     </Grid>
   );
 }
