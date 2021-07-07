@@ -34,6 +34,8 @@ export function TransferAssessment() {
 
   const [resultSet, setResultSet] = useState([]);
 
+  const ehrId = 'a61459fe-c977-4720-9ffd-7f401e61dc7b';
+
   const aql = `SELECT c/uid/value AS uid,
     e/ehr_id/value AS ehrId,
     c/context/start_time/value AS obsDate,
@@ -46,7 +48,7 @@ export function TransferAssessment() {
   f/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/value AS CFSOrdinal,
   f/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/symbol/value AS CFSText,
   f/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/symbol/defining_code/code_string AS CFSCode
-  FROM EHR e[ehr_id/value = '3e674739-950c-4b8a-976b-5aef21c618c5']
+  FROM EHR e[ehr_id/value = '${ehrId}']
   CONTAINS COMPOSITION c[openEHR-EHR-COMPOSITION.report.v1]
   CONTAINS (OBSERVATION u[openEHR-EHR-OBSERVATION.height.v2] or OBSERVATION i[openEHR-EHR-OBSERVATION.body_weight.v2] or OBSERVATION w[openEHR-EHR-OBSERVATION.body_mass_index.v2] or OBSERVATION o[openEHR-EHR-OBSERVATION.must.v0] and OBSERVATION b[openEHR-EHR-OBSERVATION.augmented_iorn.v0] or OBSERVATION f[openEHR-EHR-OBSERVATION.clinical_frailty_scale.v1])
   WHERE c/name/value = 'Transfer assessment'

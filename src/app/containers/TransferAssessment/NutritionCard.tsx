@@ -62,31 +62,33 @@ export function NutritionCard(props) {
     <Grid>
       <Card className={classes.root}>
         <CardContent>
-          <Typography
-            className={classes.title}
-            color="textSecondary"
-            gutterBottom
-          >
-            Most recent records
-          </Typography>
           <Typography variant="body2" component="p">
-            <li>
-              {' '}
-              Weight: {nutritionLatest.weight.magnitude}{' '}
-              {nutritionLatest.weight.units} on{' '}
-              {formatDate(nutritionLatest.weight.date)}{' '}
-            </li>
-            <li>
-              {' '}
-              Height: {nutritionLatest.height.magnitude}{' '}
-              {nutritionLatest.height.units} on{' '}
-              {formatDate(nutritionLatest.height.date)}{' '}
-            </li>
-            <li>
-              {' '}
-              MUST score: {nutritionLatest.mustScore.magnitude} on{' '}
-              {formatDate(nutritionLatest.mustScore.date)}{' '}
-            </li>
+            <Typography
+              className={classes.title}
+              color="textSecondary"
+              gutterBottom
+            >
+              Most recent records
+            </Typography>
+            <ul>
+              <li>
+                {' '}
+                Weight: {nutritionLatest.weight.magnitude}{' '}
+                {nutritionLatest.weight.units} on{' '}
+                {formatDate(nutritionLatest.weight.date)}{' '}
+              </li>
+              <li>
+                {' '}
+                Height: {nutritionLatest.height.magnitude}{' '}
+                {nutritionLatest.height.units} on{' '}
+                {formatDate(nutritionLatest.height.date)}{' '}
+              </li>
+              <li>
+                {' '}
+                MUST score: {nutritionLatest.mustScore.magnitude} on{' '}
+                {formatDate(nutritionLatest.mustScore.date)}{' '}
+              </li>
+            </ul>
           </Typography>
         </CardContent>
         <CardActions>
