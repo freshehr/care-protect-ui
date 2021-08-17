@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { selectError, selectLoading, selectPatient } from './selectors';
 
-import { Box, Grid, Typography, Button, IconButton } from '@material-ui/core';
+import { Box, Grid, Button, IconButton } from '@material-ui/core';
 import { useStyles } from './style';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -66,10 +66,6 @@ export function SmartEhr() {
     setEhrId('02164170-e263-44c1-bd76-0871c62659c9');
   });
 
-  const handleClick = async formName => {
-    setFormId(formName);
-  };
-
   const goBack = () => history.push('/');
   if (error) {
     return <p>{error}</p>;
@@ -81,11 +77,56 @@ export function SmartEhr() {
   const formButtons = () => {
     return (
       <>
-        <Button onClick={handleClick}>About Me</Button>
-        <Button onClick={handleClick}>Advance Care planning</Button>
-        <Button onClick={handleClick}>ReSPECT form</Button>
-        <Button onClick={handleClick}>Frailty assessment</Button>
-        <Button onClick={handleClick}>Transfer assessment</Button>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.closeButton}
+          onClick={() => {
+            setFormId('EA - About Me.v0');
+          }}
+        >
+          About Me
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.closeButton}
+          onClick={() => {
+            setFormId('East Accord - End of life care plan');
+          }}
+        >
+          Advance Care planning
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.closeButton}
+          onClick={() => {
+            setFormId('East Accord - Respect v3');
+          }}
+        >
+          ReSPECT form
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.closeButton}
+          onClick={() => {
+            setFormId('SNEE Personal Care and SupportPlan');
+          }}
+        >
+          Frailty assessment
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.closeButton}
+          onClick={() => {
+            setFormId('SNEE Personal Care and SupportPlan');
+          }}
+        >
+          Transfer assessment
+        </Button>
       </>
     );
   };
