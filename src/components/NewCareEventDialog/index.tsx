@@ -199,7 +199,7 @@ const NewCareEventDialog: React.FC<Props> = ({
               value="smartehr"
               fullWidth
             >
-              Interoperability
+              Better Care Forms
             </Button.Primary>
           </Grid>
         </Grid>
