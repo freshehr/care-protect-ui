@@ -22,7 +22,7 @@ export function SmartEhr() {
   useInjectSaga({ key: sliceKey, saga: infectionControlSaga });
   useInjectReducer({ key: sliceKey, reducer });
 
-  const [formUrl, setFormUrl] = useState('https://freshehr.com');
+  const [formUrl, setFormUrl] = useState('');
   const [formId, setFormId] = useState('');
   const [ehrId, setEhrId] = useState('');
   const [compositionId, setCompositionId] = useState('');
@@ -36,6 +36,11 @@ export function SmartEhr() {
   const error = useSelector(selectError);
   const isLoading = useSelector(selectLoading);
   const patient = useSelector(selectPatient);
+
+  useEffect(() => {
+    // Good!
+    configFormUrl();
+  }, [formId, ehrId]);
 
   const configFormUrl = async () => {
     try {
@@ -57,10 +62,12 @@ export function SmartEhr() {
 
   useEffectOnMount(() => {
     dispatch(actions.loadRecord(id));
+    setFormId('East Accord - End of life care plan');
+    setEhrId('02164170-e263-44c1-bd76-0871c62659c9');
   });
 
-  const handleClick = async () => {
-    await configFormUrl();
+  const handleClick = async formName => {
+    setFormId(formName);
   };
 
   const goBack = () => history.push('/');
@@ -76,7 +83,7 @@ export function SmartEhr() {
       <>
         <Button onClick={handleClick}>About Me</Button>
         <Button onClick={handleClick}>Advance Care planning</Button>
-        <Button onClick={handleClick}>ResPECT</Button>
+        <Button onClick={handleClick}>ReSPECT form</Button>
         <Button onClick={handleClick}>Frailty assessment</Button>
         <Button onClick={handleClick}>Transfer assessment</Button>
       </>
