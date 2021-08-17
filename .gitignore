@@ -24,3 +24,5 @@ generated-cra-app
 template
 public/env-config.js
 
+/secrets/creds.js
+/public/form-renderer.js

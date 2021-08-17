@@ -1,73 +1,68 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
-import { useInjectSaga, useInjectReducer } from 'utils/redux-injectors';
-import { infectionControlSaga } from './saga';
-import { sliceKey, actions, reducer } from './slice';
 import { useParams, useHistory } from 'react-router-dom';
 import { selectError, selectLoading, selectPatient } from './selectors';
 
-import {
-  Box,
-  Grid,
-  Typography,
-  IconButton,
-  List,
-  ListItemText,
-  ListItem,
-} from '@material-ui/core';
+import { Box, Grid, Typography, Button, IconButton } from '@material-ui/core';
 import { useStyles } from './style';
 import CloseIcon from '@material-ui/icons/Close';
 
+import { Card, CardContent, AppBarSubpage, Spinner } from 'components';
+import Iframe from 'react-iframe';
+import { actions, reducer, sliceKey } from '../InfectionControl/slice';
 import {
-  Card,
-  CardContent,
-  AppBarSubpage,
-  AccordionDetails,
-  AccordionSummary,
-  Accordion,
-  Spinner,
-} from 'components';
-import { Nutrition } from './Nutrition';
-import { TestStatus } from './TestStatus';
-
-import { IsolationStatus } from './IsolationStatus';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Iorn2 } from './Iorn2';
+  useInjectReducer,
+  useInjectSaga,
+} from '../../../utils/redux-injectors';
+import { infectionControlSaga } from '../InfectionControl/saga';
 
 export function SmartEhr() {
   useInjectSaga({ key: sliceKey, saga: infectionControlSaga });
   useInjectReducer({ key: sliceKey, reducer });
 
-  const dispatch = useDispatch();
+  const [formUrl, setFormUrl] = useState('https://freshehr.com');
+  const [formId, setFormId] = useState('');
+  const [ehrId, setEhrId] = useState('');
+  const [compositionId, setCompositionId] = useState('');
+
   const history = useHistory();
   const params = useParams();
+  const dispatch = useDispatch();
   const id = (params as any)?.id;
   const classes = useStyles();
-  // const ref = React.useRef(null);
 
   const error = useSelector(selectError);
   const isLoading = useSelector(selectLoading);
   const patient = useSelector(selectPatient);
 
+  const configFormUrl = async () => {
+    try {
+      const formApp = process.env.PUBLIC_URL + '/formrender.html';
+      const formUrl =
+        compositionId === ''
+          ? `${formApp}?ehrId=${ehrId}&form=${formId}`
+          : `${formApp}?ehrId=${ehrId}&form=${formId}&uid=${compositionId}`;
+
+      setFormUrl(formUrl);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
   const useEffectOnMount = (effect: React.EffectCallback) => {
     useEffect(effect, []);
   };
+
   useEffectOnMount(() => {
     dispatch(actions.loadRecord(id));
-    dispatch(actions.loadInfectionControl(id));
   });
 
-  const [expanded, setExpanded] = React.useState({
-    covid: 'covid',
-    test: 'test',
-    isolation: 'isolation',
-  });
-
-  const handleChange = panel => (event, isExpanded) => {
-    setExpanded({ ...expanded, [panel]: isExpanded ? panel : false });
+  const handleClick = async () => {
+    await configFormUrl();
   };
+
   const goBack = () => history.push('/');
   if (error) {
     return <p>{error}</p>;
@@ -75,13 +70,26 @@ export function SmartEhr() {
   if (isLoading) {
     return <Spinner />;
   }
+
+  const formButtons = () => {
+    return (
+      <>
+        <Button onClick={handleClick}>About Me</Button>
+        <Button onClick={handleClick}>Advance Care planning</Button>
+        <Button onClick={handleClick}>ResPECT</Button>
+        <Button onClick={handleClick}>Frailty assessment</Button>
+        <Button onClick={handleClick}>Transfer assessment</Button>
+      </>
+    );
+  };
+
   return (
     <>
       <Helmet>
-        <title>{`Transfer Assessment`}</title>
-        <meta name="description" content={`Transfer Assessment`} />
+        <title>{`Better Embedded Forms`}</title>
+        <meta name="description" content={`Better Embedded Forms`} />
       </Helmet>
-      <AppBarSubpage header={`Transfer Assessment`}>
+      <AppBarSubpage header={`Better Embedded Forms`}>
         <IconButton
           color="inherit"
           onClick={goBack}
@@ -115,24 +123,24 @@ export function SmartEhr() {
         )}
 
         <Box width="100%" className={classes.section}>
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            direction="column"
-          >
-            <Box p={1} width="100%">
-              <Grid container justify="center" spacing={4}>
-                <Grid item xs={6} md={6}></Grid>
-                <Grid item xs={6} md={6}>
-                  <Iorn2 />
-                </Grid>
-              </Grid>
-            </Box>
+          <Grid container justify="center" alignItems="center">
+            <Grid item xs={12} sm={12} md={12}>
+              {' '}
+              {formButtons()}
+            </Grid>
 
-            <Box p={1}>
-              <Box p={1}></Box>
-            </Box>
+            <Grid item xs={12} sm={12} md={12}>
+              <Box p={1} width="100%">
+                <Iframe
+                  url={formUrl}
+                  width="100%"
+                  height="800"
+                  id="myId"
+                  className="myClassname"
+                  position="relative"
+                />
+              </Box>
+            </Grid>
           </Grid>
         </Box>
       </Box>

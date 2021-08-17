@@ -1,0 +1,111 @@
+<head>
+    <script src="./form-renderer.js"></script>
+    <link rel="stylesheet" type="text/css" href="./styles.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="./styles-theme.css" media="screen"/>
+    <title>One London demo</title>
+</head>
+
+<body class="ehr-form">
+
+<div id="container">
+    <button id=operation onclick="save()"></button>
+
+    <form-renderer id="fr"></form-renderer>
+
+</div>
+
+<script>
+
+ let params = parseQueries();
+ applyParams(params);
+
+function parseQueries(){
+    var urlParams = new URLSearchParams(window.location.search);
+
+    console.log("params",urlParams.toString()); // "?post=1234&action=edit"
+
+    let ehrId = urlParams.get('ehrId');
+    let form = urlParams.get('form');
+
+    let uid = null;
+     if (urlParams.has('uid')) {
+        uid = urlParams.get('uid');
+    }
+
+     return {ehrId,uid,form}
+
+
+
+}
+
+function applyParams(params) {
+
+    let fr = document.getElementById("fr");
+
+    fr.formMetadata = {
+        "name": params.form ,
+    };
+
+let opText = "Save";
+
+    if (params.uid){
+        fr.compositionId = params.uid;
+        opText = 'Update'
+    }
+
+    document.getElementById("operation").innerHTML = opText;
+
+    fr.formEnvironment = {
+        variables: [
+            {
+                name: 'ehrId',
+                value: params.ehrId
+            }
+        ]
+    }
+
+    fr.resourceUrl =  'xxx';
+    fr.credentials = {
+        username: "xxx",
+        password: "xxx"
+    };
+
+    fr.context = {
+        language: 'en',
+        readonly: false
+    };
+
+}
+    async function save() {
+
+        let fr = document.getElementById("fr");
+        const api = fr.getScriptApi();
+
+
+     if (!fr.compositionId) {
+
+         const response = await api.saveComposition();
+
+         if (!response.success) {
+             throw response.error;
+         }
+         fr.compositionId = response.uid
+         alert('Saved Composition successfully: ' + response.uid);
+     }
+     else
+     {
+
+         const response = await api.updateComposition()
+
+         if (!response.success) {
+             throw response.error;
+         }
+
+         fr.compositionId = response.uid
+         alert('Updated Composition successfully: ' + response.uid);
+     }
+    }
+
+</script>
+
+</body>
