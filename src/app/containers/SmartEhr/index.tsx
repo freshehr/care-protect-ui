@@ -22,9 +22,20 @@ export function SmartEhr() {
   useInjectSaga({ key: sliceKey, saga: infectionControlSaga });
   useInjectReducer({ key: sliceKey, reducer });
 
+  const cdrUrl = '';
+  const cdrUserName = '';
+  const cdrPassword = '';
+  const cdrAuth = '';
+
   const [formUrl, setFormUrl] = useState<string>();
   const [formId, setFormId] = useState<string>();
-  const [ehrId, setEhrId] = useState<string>();
+  const [templateId, setTemplateId] = useState<string>();
+  const [formPresentationMode, setFormPresentationMode] = useState<boolean>(
+    false,
+  );
+  const [ehrId, setEhrId] = useState<string>(
+    '9e36387a-2223-4e4c-9a3b-85dc1115ff8d',
+  );
   const [compositionId, setCompositionId] = useState<string>();
 
   const history = useHistory();
@@ -44,13 +55,71 @@ export function SmartEhr() {
     }
   }, [formId, ehrId]);
 
+  useEffect(() => {
+    // Good!
+    if (!isLoading) {
+      findComposition();
+    }
+  }, [ehrId]);
+
+  const findComposition = async () => {
+    try {
+      const aqlString = `SELECT c/archetype_details/template_id/value as templateId,
+         c/uid/value as uid,
+         e/ehr_id/value as ehrId
+          FROM EHR e
+          CONTAINS COMPOSITION c
+          WHERE c/archetype_details/template_id/value = '${templateId}'
+          AND e/ehr_id/value = '${ehrId}'
+          ORDER BY c/context/start_time/value DESC
+          OFFSET 0 LIMIT 1`;
+
+      const response = await fetch(
+        'https://jsonplaceholder.typicode.com/posts',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(aqlString),
+        },
+      );
+
+      const resultSet = await response.json();
+      if (resultSet !== undefined) {
+        console.dir(resultSet);
+        return resultSet[0].uid;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const findEHR = async () => {
+    try {
+      const response = await fetch(
+        'https://jsonplaceholder.typicode.com/posts',
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
+
+      const resultSet = await response.json();
+      if (resultSet !== undefined) {
+        console.dir(resultSet);
+        return resultSet[0].uid;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const configFormUrl = async () => {
     try {
       const formApp = process.env.PUBLIC_URL + '/formrender.html';
       const formUrl =
         compositionId === undefined
-          ? `${formApp}?ehrId=${ehrId}&form=${formId}`
-          : `${formApp}?ehrId=${ehrId}&form=${formId}&uid=${compositionId}`;
+          ? `${formApp}?ehrId=${ehrId}&form=${formId}&pMode=${formPresentationMode}`
+          : `${formApp}?ehrId=${ehrId}&form=${formId}&pMode=${formPresentationMode}&uid=${compositionId}`;
 
       setFormUrl(formUrl);
       console.log('Setting url');
@@ -65,7 +134,6 @@ export function SmartEhr() {
 
   useEffectOnMount(() => {
     dispatch(actions.loadRecord(id));
-    setEhrId('02164170-e263-44c1-bd76-0871c62659c9');
   });
 
   const goBack = () => history.push('/');
@@ -85,6 +153,7 @@ export function SmartEhr() {
           className={classes.closeButton}
           onClick={() => {
             setFormId('EA - About Me.v0');
+            setFormPresentationMode(false);
           }}
         >
           About Me
@@ -94,7 +163,22 @@ export function SmartEhr() {
           color="primary"
           className={classes.closeButton}
           onClick={() => {
+            setFormId('East Accord - End of Life Summary');
+            setTemplateId('East Accord - End of life care plan');
+            setFormPresentationMode(true);
+          }}
+        >
+          EoL Summary
+        </Button>
+
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.closeButton}
+          onClick={() => {
             setFormId('East Accord - End of life care plan');
+            setTemplateId('East Accord - End of life care plan');
+            setFormPresentationMode(false);
           }}
         >
           Advance Care planning
@@ -105,6 +189,8 @@ export function SmartEhr() {
           className={classes.closeButton}
           onClick={() => {
             setFormId('East Accord - Respect v3');
+            setTemplateId('East Accord - End of life care plan');
+            setFormPresentationMode(false);
           }}
         >
           ReSPECT form
@@ -115,9 +201,22 @@ export function SmartEhr() {
           className={classes.closeButton}
           onClick={() => {
             setFormId('OL - Frailty Care plan');
+            setTemplateId('East Accord - End of life care plan');
+            setFormPresentationMode(false);
           }}
         >
           Frailty assessment
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.closeButton}
+          onClick={() => {
+            setFormId('Care Protect plus demo');
+            setTemplateId('East Accord - End of life care plan');
+          }}
+        >
+          Care home assessment
         </Button>
       </>
     );
