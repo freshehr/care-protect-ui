@@ -1,9 +1,9 @@
 .ehr-form .ehr-form--theme,
 .ehr-form .ehr-form--theme.default {
   --b-labeled-input-font-family: Tahoma, Arial, sans-serif;
-  --b-labeled-input-focused-border-color-inner: #BBDEFB;
-  --b-labeled-input-focused-border-color-outer: #90CAF9 ;
-  --b-labeled-input-background-color: #E3F2FD;
+  --b-labeled-input-focused-border-color-inner: #afc0cd;
+  --b-labeled-input-focused-border-color-outer: #afc0cd;
+/*  --b-labeled-input-background-color: #3F2FD; */
   --b-labeled-input-invalid-background-color: #FDEDEC;
   --b-labeled-input-focused-background-color: #FFF;
   --b-labeled-input-border-color: #FFF;
