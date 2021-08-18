@@ -22,10 +22,10 @@ export function SmartEhr() {
   useInjectSaga({ key: sliceKey, saga: infectionControlSaga });
   useInjectReducer({ key: sliceKey, reducer });
 
-  const [formUrl, setFormUrl] = useState('');
-  const [formId, setFormId] = useState('');
-  const [ehrId, setEhrId] = useState('');
-  const [compositionId, setCompositionId] = useState('');
+  const [formUrl, setFormUrl] = useState<string>();
+  const [formId, setFormId] = useState<string>();
+  const [ehrId, setEhrId] = useState<string>();
+  const [compositionId, setCompositionId] = useState<string>();
 
   const history = useHistory();
   const params = useParams();
@@ -39,18 +39,21 @@ export function SmartEhr() {
 
   useEffect(() => {
     // Good!
-    configFormUrl();
+    if (!isLoading) {
+      configFormUrl();
+    }
   }, [formId, ehrId]);
 
   const configFormUrl = async () => {
     try {
       const formApp = process.env.PUBLIC_URL + '/formrender.html';
       const formUrl =
-        compositionId === ''
+        compositionId === undefined
           ? `${formApp}?ehrId=${ehrId}&form=${formId}`
           : `${formApp}?ehrId=${ehrId}&form=${formId}&uid=${compositionId}`;
 
       setFormUrl(formUrl);
+      console.log('Setting url');
     } catch (e) {
       console.log(e.message);
     }
@@ -62,7 +65,6 @@ export function SmartEhr() {
 
   useEffectOnMount(() => {
     dispatch(actions.loadRecord(id));
-    setFormId('East Accord - End of life care plan');
     setEhrId('02164170-e263-44c1-bd76-0871c62659c9');
   });
 
@@ -112,25 +114,16 @@ export function SmartEhr() {
           color="primary"
           className={classes.closeButton}
           onClick={() => {
-            setFormId('SNEE Personal Care and SupportPlan');
+            setFormId('OL - Frailty Care plan');
           }}
         >
           Frailty assessment
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.closeButton}
-          onClick={() => {
-            setFormId('SNEE Personal Care and SupportPlan');
-          }}
-        >
-          Transfer assessment
         </Button>
       </>
     );
   };
 
+  console.log('Rendering');
   return (
     <>
       <Helmet>
@@ -177,18 +170,20 @@ export function SmartEhr() {
               {formButtons()}
             </Grid>
 
-            <Grid item xs={12} sm={12} md={12}>
-              <Box p={1} width="100%">
-                <Iframe
-                  url={formUrl}
-                  width="100%"
-                  height="800"
-                  id="myId"
-                  className="myClassname"
-                  position="relative"
-                />
-              </Box>
-            </Grid>
+            {formId && ehrId && formUrl && (
+              <Grid item xs={12} sm={12} md={12}>
+                <Box p={1} width="100%">
+                  <Iframe
+                    url={formUrl}
+                    width="100%"
+                    height="800"
+                    id="myId"
+                    className="myClassname"
+                    position="relative"
+                  />
+                </Box>
+              </Grid>
+            )}
           </Grid>
         </Box>
       </Box>
