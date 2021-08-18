@@ -27,4 +27,4 @@ public/env-config.js
 /secrets/creds.js
 /public/form-renderer.js
 /public/formrender.html
-
+/src/services/cdr/CDRConfigs.js

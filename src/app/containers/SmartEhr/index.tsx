@@ -17,25 +17,22 @@ import {
   useInjectSaga,
 } from '../../../utils/redux-injectors';
 import { infectionControlSaga } from '../InfectionControl/saga';
+import CDRService from '../../../services/cdr/CDRService';
 
 export function SmartEhr() {
+  let partyId = '52';
+
   useInjectSaga({ key: sliceKey, saga: infectionControlSaga });
   useInjectReducer({ key: sliceKey, reducer });
 
-  const cdrUrl = '';
-  const cdrUserName = '';
-  const cdrPassword = '';
-  const cdrAuth = '';
-
+  const cdrService = new CDRService('one-london');
   const [formUrl, setFormUrl] = useState<string>();
   const [formId, setFormId] = useState<string>();
-  const [templateId, setTemplateId] = useState<string>();
+  const [templateId, setTemplateId] = useState<string>('');
   const [formPresentationMode, setFormPresentationMode] = useState<boolean>(
     false,
   );
-  const [ehrId, setEhrId] = useState<string>(
-    '9e36387a-2223-4e4c-9a3b-85dc1115ff8d',
-  );
+  const [ehrId, setEhrId] = useState<string>('');
   const [compositionId, setCompositionId] = useState<string>();
 
   const history = useHistory();
@@ -48,6 +45,14 @@ export function SmartEhr() {
   const isLoading = useSelector(selectLoading);
   const patient = useSelector(selectPatient);
 
+  const findEhr = async nhsNumber => {
+    const partyId = 52;
+
+    setEhrId(await cdrService.findEhrIdBySubjectId(partyId, 'default'));
+  };
+
+  findEhr(patient?.nhsnumber);
+
   useEffect(() => {
     // Good!
     if (!isLoading) {
@@ -56,60 +61,28 @@ export function SmartEhr() {
   }, [formId, ehrId]);
 
   useEffect(() => {
-    // Good!
     if (!isLoading) {
-      findComposition();
+      findLatestComposition();
     }
-  }, [ehrId]);
+  }, [ehrId, templateId]);
 
-  const findComposition = async () => {
-    try {
-      const aqlString = `SELECT c/archetype_details/template_id/value as templateId,
-         c/uid/value as uid,
-         e/ehr_id/value as ehrId
-          FROM EHR e
-          CONTAINS COMPOSITION c
-          WHERE c/archetype_details/template_id/value = '${templateId}'
-          AND e/ehr_id/value = '${ehrId}'
-          ORDER BY c/context/start_time/value DESC
-          OFFSET 0 LIMIT 1`;
+  const findLatestComposition = async () => {
+    const aqlString = `SELECT c/archetype_details/template_id/value as templateId,
+       c/uid/value as uid,
+       e/ehr_id/value as ehrId
+        FROM EHR e
+        CONTAINS COMPOSITION c
+        WHERE c/archetype_details/template_id/value = '${templateId}'
+        AND e/ehr_id/value = '${ehrId}'
+        ORDER BY c/context/start_time/value DESC
+        OFFSET 0 LIMIT 1`;
 
-      const response = await fetch(
-        'https://jsonplaceholder.typicode.com/posts',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(aqlString),
-        },
-      );
+    const resultSet = await cdrService.runQuery(aqlString);
 
-      const resultSet = await response.json();
-      if (resultSet !== undefined) {
-        console.dir(resultSet);
-        return resultSet[0].uid;
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const findEHR = async () => {
-    try {
-      const response = await fetch(
-        'https://jsonplaceholder.typicode.com/posts',
-        {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        },
-      );
-
-      const resultSet = await response.json();
-      if (resultSet !== undefined) {
-        console.dir(resultSet);
-        return resultSet[0].uid;
-      }
-    } catch (err) {
-      console.log(err);
+    console.log('aql = ' + aqlString);
+    if (resultSet !== undefined) {
+      console.dir(resultSet);
+      setCompositionId(resultSet[0].uid);
     }
   };
 
