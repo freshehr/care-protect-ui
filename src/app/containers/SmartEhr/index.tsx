@@ -5,7 +5,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { selectError, selectLoading, selectPatient } from './selectors';
 
-import { Box, Grid, Button, IconButton } from '@material-ui/core';
+import {
+  Box,
+  Grid,
+  Button,
+  IconButton,
+  ButtonGroup,
+  CircularProgress,
+} from '@material-ui/core';
 import { useStyles } from './style';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -28,6 +35,7 @@ export function SmartEhr() {
   const cdrService = new CDRService('one-london');
   const [formUrl, setFormUrl] = useState<string>();
   const [formId, setFormId] = useState<string>();
+  const [formLoading, setFormLoading] = useState<boolean>(false);
   const [templateId, setTemplateId] = useState<string>('');
   const [formPresentationMode, setFormPresentationMode] = useState<boolean>(
     false,
@@ -58,30 +66,30 @@ export function SmartEhr() {
     if (!isLoading) {
       configFormUrl();
     }
-  }, [formId, ehrId]);
+  }, [formId, ehrId, compositionId]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && templateId && ehrId) {
       findLatestComposition();
+      setFormLoading(true);
     }
-  }, [ehrId, templateId]);
+  }, [formUrl]);
 
   const findLatestComposition = async () => {
     const aqlString = `SELECT c/archetype_details/template_id/value as templateId,
        c/uid/value as uid,
        e/ehr_id/value as ehrId
         FROM EHR e
+        contains version v
         CONTAINS COMPOSITION c
         WHERE c/archetype_details/template_id/value = '${templateId}'
         AND e/ehr_id/value = '${ehrId}'
-        ORDER BY c/context/start_time/value DESC
+        ORDER BY v/commit_audit/time_committed desc
         OFFSET 0 LIMIT 1`;
 
     const resultSet = await cdrService.runQuery(aqlString);
 
-    console.log('aql = ' + aqlString);
     if (resultSet !== undefined) {
-      console.dir(resultSet);
       setCompositionId(resultSet[0].uid);
     }
   };
@@ -96,6 +104,7 @@ export function SmartEhr() {
 
       setFormUrl(formUrl);
       console.log('Setting url');
+      console.log('Config form-loading', formLoading);
     } catch (e) {
       console.log(e.message);
     }
@@ -113,86 +122,119 @@ export function SmartEhr() {
   if (error) {
     return <p>{error}</p>;
   }
+
   if (isLoading) {
     return <Spinner />;
   }
 
   const formButtons = () => {
     return (
-      <>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.closeButton}
-          onClick={() => {
-            setFormId('EA - About Me.v0');
-            setFormPresentationMode(false);
-          }}
-        >
-          About Me
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.closeButton}
-          onClick={() => {
-            setFormId('East Accord - End of Life Summary');
-            setTemplateId('East Accord - End of life care plan');
-            setFormPresentationMode(true);
-          }}
-        >
-          EoL Summary
-        </Button>
+      <Grid item xs={12} sm={12} md={12}>
+        <ButtonGroup color="primary" size="small">
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.closeButton}
+            onClick={() => {
+              setFormId('EA - About Me.v0');
+              setTemplateId('EA - About Me.v0');
+              setFormPresentationMode(false);
+            }}
+          >
+            About Me
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.closeButton}
+            onClick={() => {
+              setFormId('East Accord - End of Life Summary');
+              setTemplateId('EA - End of life Care.v0');
+              setFormPresentationMode(true);
+            }}
+          >
+            EoL Summary
+          </Button>
 
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.closeButton}
-          onClick={() => {
-            setFormId('East Accord - End of life care plan');
-            setTemplateId('East Accord - End of life care plan');
-            setFormPresentationMode(false);
-          }}
-        >
-          Advance Care planning
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.closeButton}
-          onClick={() => {
-            setFormId('East Accord - Respect v3');
-            setTemplateId('East Accord - End of life care plan');
-            setFormPresentationMode(false);
-          }}
-        >
-          ReSPECT form
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.closeButton}
-          onClick={() => {
-            setFormId('OL - Frailty Care plan');
-            setTemplateId('East Accord - End of life care plan');
-            setFormPresentationMode(false);
-          }}
-        >
-          Frailty assessment
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.closeButton}
-          onClick={() => {
-            setFormId('Care Protect plus demo');
-            setTemplateId('East Accord - End of life care plan');
-          }}
-        >
-          Care home assessment
-        </Button>
-      </>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.closeButton}
+            onClick={() => {
+              setFormId('East Accord - End of life care plan');
+              setTemplateId('Composed document');
+              setFormPresentationMode(false);
+            }}
+          >
+            Advance Care planning
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.closeButton}
+            onClick={() => {
+              setFormId('East Accord - Respect v3');
+              setTemplateId('EA - ReSPECT-3.v0');
+              setFormPresentationMode(false);
+            }}
+          >
+            ReSPECT form
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.closeButton}
+            onClick={() => {
+              setFormId('OL - Frailty Care plan');
+              setTemplateId('OL - Frailty Care plan');
+              setFormPresentationMode(false);
+            }}
+          >
+            Frailty assessment
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.closeButton}
+            onClick={() => {
+              setFormId('Care Protect plus demo');
+              setTemplateId('Care Protect Plus');
+            }}
+          >
+            Care home assessment
+          </Button>
+        </ButtonGroup>
+        {showSpinner()}
+      </Grid>
     );
+  };
+
+  const showSpinner = () => {
+    console.log('Show spinner', formLoading);
+    return formLoading ? <CircularProgress /> : null;
+  };
+
+  const showIFrame = () => {
+    if (formId && ehrId && formUrl)
+      return (
+        <Grid item xs={12} sm={12} md={12}>
+          <Box p={1} width="100%">
+            <Iframe
+              url={formUrl}
+              width="100%"
+              height="800"
+              id="myId"
+              loading="lazy"
+              onLoad={() => {
+                setFormLoading(false);
+              }}
+              className="myClassname"
+              position="relative"
+            />
+          </Box>
+        </Grid>
+      );
+    else return null;
   };
 
   console.log('Rendering');
@@ -237,25 +279,9 @@ export function SmartEhr() {
 
         <Box width="100%" className={classes.section}>
           <Grid container justify="center" alignItems="center">
-            <Grid item xs={12} sm={12} md={12}>
-              {' '}
-              {formButtons()}
-            </Grid>
+            {formButtons()}
 
-            {formId && ehrId && formUrl && (
-              <Grid item xs={12} sm={12} md={12}>
-                <Box p={1} width="100%">
-                  <Iframe
-                    url={formUrl}
-                    width="100%"
-                    height="800"
-                    id="myId"
-                    className="myClassname"
-                    position="relative"
-                  />
-                </Box>
-              </Grid>
-            )}
+            {showIFrame()}
           </Grid>
         </Box>
       </Box>

@@ -23,7 +23,6 @@ generated-cra-app
 .cra-template-rb
 template
 public/env-config.js
-
 /secrets/creds.js
 /public/form-renderer.js
 /public/formrender.html
