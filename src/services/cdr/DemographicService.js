@@ -19,17 +19,6 @@ class DemographicService {
         config,
       );
 
-      // const config = {
-      //     method: 'get',
-      //     url: this.cdrService.restUrl('demographics/party/query')+'/?lastNames=**',
-      //     headers: {
-      //         'Content-Type': 'application/json',
-      //         'Authorization': 'Basic YjI5ZWNhZGUtZWI2NS00NzQ4LThhNjEtMDE1NjQyMWMyNmFkOiQyYSQxMCQ2MTlraQ=='
-      //     }
-      // };
-      //
-      // const response = await axios(config)
-
       return await response.data.parties;
     } catch (e) {
       console.log(e.message);
