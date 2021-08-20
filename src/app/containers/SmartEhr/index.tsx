@@ -136,6 +136,42 @@ export function SmartEhr() {
             color="primary"
             className={classes.closeButton}
             onClick={() => {
+              setFormId('East Accord - End of Life Summary');
+              setTemplateId('EA - End of life Care.v0');
+              setFormPresentationMode(true);
+            }}
+          >
+            EoL Summary
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.closeButton}
+            onClick={() => {
+              setFormId('East Accord - End of life care plan');
+              setTemplateId('Composed document');
+              setFormPresentationMode(false);
+            }}
+          >
+            EoL Care Plan
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.closeButton}
+            onClick={() => {
+              setFormId('East Accord - Respect v3');
+              setTemplateId('EA - ReSPECT-3.v0');
+              setFormPresentationMode(false);
+            }}
+          >
+            ReSPECT
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.closeButton}
+            onClick={() => {
               setFormId('EA - About Me.v0');
               setTemplateId('EA - About Me.v0');
               setFormPresentationMode(false);
@@ -148,45 +184,8 @@ export function SmartEhr() {
             color="primary"
             className={classes.closeButton}
             onClick={() => {
-              setFormId('East Accord - End of Life Summary');
-              setTemplateId('EA - End of life Care.v0');
-              setFormPresentationMode(true);
-            }}
-          >
-            EoL Summary
-          </Button>
-
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.closeButton}
-            onClick={() => {
-              setFormId('East Accord - End of life care plan');
-              setTemplateId('Composed document');
-              setFormPresentationMode(false);
-            }}
-          >
-            Advance Care planning
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.closeButton}
-            onClick={() => {
-              setFormId('East Accord - Respect v3');
-              setTemplateId('EA - ReSPECT-3.v0');
-              setFormPresentationMode(false);
-            }}
-          >
-            ReSPECT form
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.closeButton}
-            onClick={() => {
               setFormId('OL - Frailty Care plan');
-              setTemplateId('OL - Frailty Care plan');
+              setTemplateId('Composed document');
               setFormPresentationMode(false);
             }}
           >
