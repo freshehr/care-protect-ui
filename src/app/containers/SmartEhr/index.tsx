@@ -84,6 +84,7 @@ export function SmartEhr() {
         CONTAINS COMPOSITION c
         WHERE c/archetype_details/template_id/value = '${templateId}'
         AND e/ehr_id/value = '${ehrId}'
+        AND c TAGGED BY 'formName::${{ formId }}'
         ORDER BY v/commit_audit/time_committed desc
         OFFSET 0 LIMIT 1`;
 
